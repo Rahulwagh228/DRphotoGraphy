@@ -1,8 +1,9 @@
 .heroSection {
   position: relative;
-  height: 80vh;
+  height: 100vh; // Set to 80vh as requested
   width: 100%;
   overflow: hidden;
+  background-color: var(--soft-peach);
 }
 
 .backgroundContainer {
@@ -28,27 +29,44 @@
   z-index: 10;
   width: 100%;
   text-align: center;
+  padding: 0 1rem;
 }
 
 .heading {
-  color: #BFA75F;
+  color: var(--champagne-beige);
   font-family: var(--font-heading);
-  font-size: 3.5rem;
-  margin-bottom: 2rem;
+  font-size: 4.5rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  
+  @media (max-width: 768px) {
+    font-size: 3rem;
+  }
 }
 
 .contactButton {
-  background-color: #4B0000;
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
+  background-color: var(--deep-maroon);
+  color: var(--ivory-white);
+  padding: 1.2rem 3rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-body);
+  letter-spacing: 1px;
+  transition: all 0.4s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    background-color: rgba(75, 0, 0, 0.9);
+    transform: translateY(-3px) scale(1.02);
+    background-color: transparent;
+    border: 2px solid var(--champagne-beige);
+    color: var(--champagne-beige);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }

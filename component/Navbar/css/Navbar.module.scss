@@ -42,12 +42,12 @@
 
   &Item {
     color: var(--darkerPrimary);
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     transition: all 0.3s ease;
     position: relative;
     padding: 8px 0;
     text-decoration: none;
-    font-weight: 550;
+    font-weight: 500;
 
     &::after {
       content: '';

@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Font Face Declarations */
 @font-face {
@@ -26,6 +28,20 @@
   font-family: 'Montserrat';
   src: url('/assets/fonts/Montserrat-Medium.ttf') format('truetype');
   font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -65,24 +81,10 @@
   box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 /* Base Styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--soft-peach);
+  color: var(--deep-maroon);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;

@@ -5,9 +5,9 @@ const page = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-16">
+      <main>
         {/* Content will go here */}
-      </div>
+      </main>
     </>
   )
 }

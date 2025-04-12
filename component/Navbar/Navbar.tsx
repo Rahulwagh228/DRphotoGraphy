@@ -16,9 +16,9 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className={`${styles.navbar} body-text`}>
+    <nav className={styles.navbar}>
       <div className={styles.navbarContainer}>
-        <Link href="/" className={`${styles.logoContainer} heading`}>
+        <Link href="/" className={styles.logoContainer}>
           <Image src={Logo} alt="Logo" width={80} height={80} className={styles.logoImage} />
         </Link>
 
@@ -28,7 +28,7 @@ const Navbar = () => {
             <Link
               key={item.label}
               href={item.href}
-              className={`${styles.menuItem} font-medium`}
+              className={styles.menuItem}
             >
               {item.label}
             </Link>

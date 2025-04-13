@@ -15,17 +15,36 @@ const HeroSection = () => {
         />
         <div className={styles.overlay}></div>
       </div>
-      
+
       <div className={styles.content}>
         <h1 className={styles.heading}>
           Book your fairytale shoot
         </h1>
-        
-        <Link href="/contact">
-          <button className={styles.contactButton}>
-            Contact Now
-          </button>
-        </Link>
+        <div className={styles.heroButtons}>
+
+          <Link href="/contact">
+            <button className={styles.contactButton}>
+              Contact Now
+            </button>
+          </Link>
+          <Link href="tel: +918766590188">
+            <button className={styles.CallButton}>
+              <Image
+                src="/assets/icons/Callicon.svg"
+                alt="Call Icon"
+                width={20}
+                height={20}
+                className={styles.callIcon}
+                >
+              </Image>
+              <span>
+
+              Call Us
+              </span>
+            </button>
+
+          </Link>
+        </div>
       </div>
     </section>
   )

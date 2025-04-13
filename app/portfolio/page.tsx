@@ -24,12 +24,12 @@ const images = {
 };
 
 export default function Portfolio() {
-  const [activeTab, setActiveTab] = useState<Category>('wedding');
-  return (
+  const [activeTab, setActiveTab] = useState<Category>('wedding');  return (
     <div className={styles.portfolioContainer}>
-      <h1 className={styles.portfolioHeading}>Portfolio</h1>
-      <div className={styles.tabsContainer}>
-        <button
+      <section className={styles.headerSection}>
+        <h1 className={styles.portfolioHeading}>Portfolio</h1>
+        <div className={styles.tabsContainer}>
+          <button
           className={`${styles.tab} ${activeTab === 'wedding' ? styles.active : ''}`}
           onClick={() => setActiveTab('wedding')}
         >
@@ -46,23 +46,25 @@ export default function Portfolio() {
           onClick={() => setActiveTab('other')}
         >
           Others
-        </button>
-      </div>
+        </button>      </div>
+      </section>
 
-      <div className={styles.imageGrid}>
-        {images[activeTab].map((image, index) => (
-          <div key={index} className={styles.imageWrapper}>
-            <Image
-              src={image}
-              alt={`${activeTab} photo ${index + 1}`}
-              fill
-              style={{ objectFit: 'cover' }}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority={index < 4}
-            />
-          </div>
-        ))}
-      </div>
+      <section className={styles.photosSection}>
+        <div className={styles.imageGrid}>
+          {images[activeTab].map((image, index) => (
+            <div key={index} className={styles.imageWrapper}>
+              <Image
+                src={image}
+                alt={`${activeTab} photo ${index + 1}`}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority={index < 4}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

@@ -10,7 +10,8 @@ export default function LayoutWrapper({
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar />      <main style={{ flex: 1, marginTop: '4rem' }}>
+      <Navbar />  
+          <main style={{ flex: 1, marginTop: '4rem' }}>
         {children}
       </main>
       <Footer />

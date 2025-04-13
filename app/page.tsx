@@ -6,7 +6,6 @@ import HeroSection2 from '@/component/hero-section2/heroSection2'
 const page = () => {
   return (
     <>
-      <Navbar />
       <main>
         <HeroSection />
         <HeroSection2 />

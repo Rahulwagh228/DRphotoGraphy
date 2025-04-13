@@ -13,9 +13,9 @@ const Navbar = () => {
 
   const menuItems = [
     { label: 'Home', href: '/' },
-    { label: 'Services', href: '/' },
+    { label: 'Services', href: '/services' },
     { label: 'Portfolio', href: '/portfolio' },
-    { label: 'Testimonials', href: '/' },
+    { label: 'Testimonials', href: '/testimonial' },
   ]
 
   const isActive = (path: string) => pathname === path

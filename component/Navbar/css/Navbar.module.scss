@@ -14,6 +14,33 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .menuItem {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:hover {
+      color: #666;
+    }
+
+    &.active {
+      color: #BFA75F;
+      font-weight: 600; // Changed to semi-bold
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #BFA75F;
+      }
+    }
+  }
 }
 
 .logo {

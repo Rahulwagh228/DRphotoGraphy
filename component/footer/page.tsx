@@ -7,9 +7,10 @@ import styles from './Footer.module.scss'
 
 const Footer = () => {
   const menuItems = [
-    { label: 'Services', href: '/' },
-    { label: 'Portfolio', href: '/' },
-    { label: 'Testimonials', href: '/' },
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: 'Portfolio', href: '/portfolio' },
+    { label: 'Testimonials', href: '/testimonials' },
   ]
 
   const address = {

@@ -25,9 +25,9 @@ const images = {
 
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState<Category>('wedding');
-
   return (
     <div className={styles.portfolioContainer}>
+      <h1 className={styles.portfolioHeading}>Portfolio</h1>
       <div className={styles.tabsContainer}>
         <button
           className={`${styles.tab} ${activeTab === 'wedding' ? styles.active : ''}`}

@@ -39,7 +39,7 @@ export default function Portfolio() {
           className={`${styles.tab} ${activeTab === 'birthday' ? styles.active : ''}`}
           onClick={() => setActiveTab('birthday')}
         >
-          Birthday's
+          Birthday&apos;s
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'other' ? styles.active : ''}`}

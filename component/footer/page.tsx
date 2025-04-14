@@ -9,11 +9,10 @@ import WhatsAppIcon from '@/public/assets/icons/whatsapp.svg'
 import styles from './Footer.module.scss'
 
 const Footer = () => {
-  const menuItems = [
-    { label: 'Home', href: '/' },
+  const menuItems = [    { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
     { label: 'Portfolio', href: '/portfolio' },
-    { label: 'Testimonials', href: '/testimonials' },
+    { label: 'About Us', href: '/aboutUs' },
   ]
 
   const address = {

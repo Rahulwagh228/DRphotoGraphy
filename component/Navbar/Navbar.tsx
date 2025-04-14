@@ -11,11 +11,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
 
-  const menuItems = [
-    { label: 'Home', href: '/' },
+  const menuItems = [    { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
     { label: 'Portfolio', href: '/portfolio' },
-    { label: 'Testimonials', href: '/testimonial' },
+    { label: 'About Us', href: '/aboutUs' },
   ]
 
   const isActive = (path: string) => pathname === path

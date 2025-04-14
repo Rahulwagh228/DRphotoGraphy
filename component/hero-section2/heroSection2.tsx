@@ -14,12 +14,11 @@ const HeroSection2 = () => {
         </Link>
       </div>
 
-      <div className={styles.section}>
-        <h2 className={styles.heading}>About Us</h2>
+      <div className={styles.section}>        <h2 className={styles.heading}>About Us</h2>
         <p className={styles.description}>
           Professional photography services with years of experience in capturing life's precious moments.
         </p>
-        <Link href="/about">
+        <Link href="/aboutUs">
           <button className={styles.cta}>Learn More</button>
         </Link>
       </div>

@@ -99,11 +99,12 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    // text-decoration: none !important;
-    span{
+    text-decoration: none !important;
+    .callText{
       text-decoration: none !important;
     }
     &:hover{
+      text-decoration: none !important;
       background-color: var(--deep-maroon);
       color: var(--ivory-white);
       padding: 1.2rem 3rem;

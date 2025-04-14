@@ -37,7 +37,7 @@ const HeroSection = () => {
                 className={styles.callIcon}
                 >
               </Image>
-              <span>
+              <span className={styles.callText}>
 
               Call Us
               </span>

@@ -1,39 +1,43 @@
-'use client'
-import Image from 'next/image'
-import styles from './Services.module.scss'
+"use client";
+import Image from "next/image";
+import styles from "./Services.module.scss";
 
 const services = [
   {
-    title: 'Wedding Shoot',
-    description: 'Capture your special day with our professional wedding photography services.',
-    image: '/assets/portfolio-images/image-1.jpeg'
+    title: "Wedding Shoot",
+    description:
+      "Capture your special day with our professional wedding photography services.",
+    image: "/assets/portfolio-images/image-1.jpeg",
   },
   {
-    title: 'Birthday Shoot',
-    description: 'Make your birthday memories last forever with our creative photography.',
-    image: '/assets/portfolio-images/image-1.jpeg'
+    title: "Birthday Shoot",
+    description:
+      "Make your birthday memories last forever with our creative photography.",
+    image: "/assets/portfolio-images/image-1.jpeg",
   },
   {
-    title: 'Engagement Shoot',
-    description: 'Beautiful pre-wedding shots to celebrate your engagement.',
-    image: '/assets/portfolio-images/image-1.jpeg'
+    title: "Engagement Shoot",
+    description: "Beautiful pre-wedding shots to celebrate your engagement.",
+    image: "/assets/portfolio-images/image-1.jpeg",
   },
   {
-    title: 'Party Shoot',
-    description: 'Professional event photography to capture all the fun moments.',
-    image: '/assets/portfolio-images/image-1.jpeg'
+    title: "Party Shoot",
+    description:
+      "Professional event photography to capture all the fun moments.",
+    image: "/assets/portfolio-images/image-1.jpeg",
   },
   {
-    title: 'Pre Wedding Shoot',
-    description: 'Romantic and creative pre-wedding photography sessions.',
-    image: '/assets/portfolio-images/image-1.jpeg'
+    title: "Pre Wedding Shoot",
+    description: "Romantic and creative pre-wedding photography sessions.",
+    image: "/assets/portfolio-images/image-1.jpeg",
   },
   {
-    title: 'Drone Shoot',
-    description: 'Stunning aerial photography to add a unique perspective to your memories.',
-    image: '/assets/portfolio-images/image-1.jpeg'
-  }
-]
+    title: "Drone Shoot",
+    description:
+      "Stunning aerial photography to add a unique perspective to your memories.",
+    image: "/assets/portfolio-images/image-1.jpeg",
+  },
+];
 
 export default function Services() {
   return (
@@ -44,10 +48,7 @@ export default function Services() {
 
       <div className={styles.servicesGrid}>
         {services.map((service, index) => (
-          <div 
-            key={index}
-            className={styles.serviceCard}
-          >
+          <div key={index} className={styles.serviceCard}>
             <div className={styles.serviceImage}>
               <Image
                 src={service.image}
@@ -65,5 +66,5 @@ export default function Services() {
         ))}
       </div>
     </div>
-  )
+  );
 }

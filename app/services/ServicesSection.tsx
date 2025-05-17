@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import React from 'react';
-import styles from './Services.module.scss';
+import Image from "next/image";
+import React from "react";
+import styles from "./Services.module.scss";
 
 interface Service {
   title: string;
@@ -13,7 +13,8 @@ interface Service {
 const services: Service[] = [
   {
     title: "Wedding Photography",
-    description: "Capture every magical moment of your special day with our comprehensive wedding photography package.",
+    description:
+      "Capture every magical moment of your special day with our comprehensive wedding photography package.",
     image: "/assets/portfolio-images/image-1.jpeg",
     price: "Starting from ₹25,000",
     features: [
@@ -21,12 +22,13 @@ const services: Service[] = [
       "High-resolution images",
       "Digital album",
       "Drone shots",
-      "Pre-wedding shoot"
-    ]
+      "Pre-wedding shoot",
+    ],
   },
   {
     title: "Birthday Celebrations",
-    description: "Make your birthday memories last forever with our professional birthday photography services.",
+    description:
+      "Make your birthday memories last forever with our professional birthday photography services.",
     image: "/assets/portfolio-images/birthday-1.jpg",
     price: "Starting from ₹10,000",
     features: [
@@ -34,12 +36,13 @@ const services: Service[] = [
       "Edited photos",
       "Digital delivery",
       "Props included",
-      "Custom backdrops"
-    ]
+      "Custom backdrops",
+    ],
   },
   {
     title: "Engagement Sessions",
-    description: "Beautiful and romantic engagement photo sessions to celebrate your love story.",
+    description:
+      "Beautiful and romantic engagement photo sessions to celebrate your love story.",
     image: "/assets/portfolio-images/other-1.jpg",
     price: "Starting from ₹15,000",
     features: [
@@ -47,12 +50,13 @@ const services: Service[] = [
       "Multiple locations",
       "Outfit changes",
       "Digital gallery",
-      "Print package"
-    ]
+      "Print package",
+    ],
   },
   {
     title: "Event Coverage",
-    description: "Professional event photography for parties, corporate events, and special occasions.",
+    description:
+      "Professional event photography for parties, corporate events, and special occasions.",
     image: "/assets/portfolio-images/other-2.jpg",
     price: "Starting from ₹20,000",
     features: [
@@ -60,9 +64,9 @@ const services: Service[] = [
       "Professional lighting",
       "Same-day previews",
       "Online gallery",
-      "Event highlight reel"
-    ]
-  }
+      "Event highlight reel",
+    ],
+  },
 ];
 
 const ServicesSection: React.FC = () => {

@@ -1,126 +1,333 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .heroSection {
   position: relative;
-  height: 100vh; // Set to 80vh as requested
+  height: 100vh;
   width: 100%;
   overflow: hidden;
-  background-color: var(--soft-peach);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .backgroundContainer {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(26, 26, 26, 0.7) 0%,
+      rgba(26, 26, 26, 0.4) 50%,
+      rgba(201, 169, 110, 0.3) 100%
+    );
+    z-index: 2;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8) contrast(1.1);
+    transition: transform 20s ease-out;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
 }
 
 .content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   z-index: 10;
-  width: 100%;
   text-align: center;
-  padding: 0 1rem;
+  max-width: 800px;
+  padding: 0 2rem;
+  animation: fadeInUp 1.2s ease-out;
 }
 
 .heading {
-  color: var(--champagne-beige);
   font-family: var(--font-heading);
-  font-size: 4.5rem;
+  font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
-  margin-bottom: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-
+  color: #ffffff;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  
+  .highlight {
+    background: linear-gradient(135deg, #c9a96e 0%, #d4b578 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(135deg, #c9a96e 0%, #d4b578 100%);
+      border-radius: 2px;
+      animation: shimmer 2s ease-in-out infinite;
+      background-size: 200% 100%;
+    }
+  }
+  
   @media (max-width: 768px) {
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin-bottom: 1.5rem;
   }
 }
 
-.contactButton {
-  background-color: var(--deep-maroon);
-  color: var(--ivory-white);
-  padding: 1.2rem 3rem;
-  border-radius: 2rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  font-family: var(--font-body);
-  letter-spacing: 1px;
-  transition: all 0.4s ease;
-  border: 2px solid transparent;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-
-  &:hover {
-    transform: translateY(-3px) scale(1.02);
-    background-color: transparent;
-    border: 2px solid var(--champagne-beige);
-    color: var(--champagne-beige);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  &:active {
-    transform: translateY(1px);
+.subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  animation: fadeInUp 1.2s ease-out 0.3s both;
+  
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
   }
 }
 
 .heroButtons {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 1.2s ease-out 0.6s both;
 
   @media (max-width: 768px) {
-    font-size: 3rem;
     flex-direction: column;
     align-items: center;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  .CallButton {
-    color: var(--ivory-white);
-    padding: 1rem 3rem;
-    border-radius: 2rem;
-    font-size: 1.2rem;
-    font-weight: 600;
-    font-family: var(--font-body);
-    letter-spacing: 1px;
-    background-color: transparent;
-    border: 2px solid var(--ivory-white);
-    color: var(--champagne-beige);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 1rem;
-    text-decoration: none;
-    text-decoration: none;
-    .callText {
-      text-decoration: none;
+  }
+}
+
+.contactButton {
+  background: linear-gradient(135deg, #c9a96e 0%, #d4b578 100%);
+  color: #ffffff;
+  padding: 1.2rem 3rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(201, 169, 110, 0.3);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
+  }
+  
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(201, 169, 110, 0.4);
+    
+    &::before {
+      left: 100%;
     }
-    &:hover {
-      text-decoration: none;
-      text-decoration: none;
-      background-color: var(--deep-maroon);
-      color: var(--ivory-white);
-      padding: 1.2rem 3rem;
-      border-radius: 2rem;
-      font-size: 1.2rem;
-      font-weight: 600;
-      font-family: var(--font-body);
-      letter-spacing: 1px;
-      transition: all 0.4s ease;
-      border: 2px solid transparent;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+  }
+}
+
+.callButton {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  padding: 1.2rem 3rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.5px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  .callIcon {
+    transition: transform 0.3s ease;
+    filter: brightness(0) invert(1);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(201, 169, 110, 0.2) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    
+    &::before {
+      opacity: 1;
     }
+    
+    .callIcon {
+      transform: scale(1.1) rotate(5deg);
+    }
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+  }
+}
+
+.scrollIndicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: float 3s ease-in-out infinite;
+  
+  .scrollArrow {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+    animation: float 2s ease-in-out infinite;
+  }
+  
+  .scrollText {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
+
+/* Parallax effect for background */
+@media (min-width: 1024px) {
+  .backgroundContainer {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 480px) {
+  .heroSection {
+    height: 100vh;
+  }
+  
+  .content {
+    padding: 0 1rem;
+  }
+  
+  .heading {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .heroButtons {
+    gap: 0.75rem;
+  }
+  
+  .contactButton,
+  .callButton {
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 280px;
   }
 }

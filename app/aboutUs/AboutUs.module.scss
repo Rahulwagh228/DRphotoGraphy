@@ -1,7 +1,7 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -9,24 +9,99 @@
   }
 }
 
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .aboutContainer {
-  padding: 4rem 2rem;
-  background-color: var(--soft-peach);
+  padding: 8rem 2rem 6rem;
+  background: var(--background);
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(201, 169, 110, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(201, 169, 110, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
 
   .heading {
     text-align: center;
-    margin-bottom: 4rem;
-    animation: fadeInUp 0.6s ease forwards;
+    margin-bottom: 6rem;
+    animation: fadeInUp 0.8s ease-out;
     
     h1 {
       font-family: var(--font-heading);
-      color: var(--deep-maroon);
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
+      color: var(--text-primary);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      letter-spacing: -0.02em;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+        border-radius: 2px;
+      }
       
       @media (max-width: 768px) {
-        font-size: 2.5rem;
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+      
+      @media (max-width: 768px) {
+        font-size: 1.1rem;
       }
     }
   }
@@ -34,38 +109,78 @@
   .photographersGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
-    max-width: 1200px;
+    gap: 4rem;
+    max-width: 1400px;
     margin: 0 auto;
     
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       grid-template-columns: 1fr;
+      max-width: 700px;
+      gap: 3rem;
     }
   }
 
   .photographerCard {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
+    background: var(--surface);
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
-    animation: fadeInUp 0.5s ease forwards;
+    border: 1px solid rgba(201, 169, 110, 0.1);
+    position: relative;
     
     &:nth-child(1) {
-      animation-delay: 0.2s;
+      animation: slideInLeft 0.8s ease-out 0.2s both;
     }
     
     &:nth-child(2) {
-      animation-delay: 0.4s;
+      animation: slideInRight 0.8s ease-out 0.4s both;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+      z-index: 2;
     }
     
     &:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transform: translateY(-12px);
+      box-shadow: var(--shadow-xl);
+      border-color: rgba(201, 169, 110, 0.2);
+      
+      &::before {
+        transform: scaleX(1);
+      }
 
-      .photographerImage img {
-        transform: scale(1.1);
+      .photographerImage {
+        &::after {
+          opacity: 1;
+        }
+        
+        img {
+          transform: scale(1.1);
+          filter: brightness(1.1) contrast(1.1) saturate(1.2);
+        }
+      }
+      
+      .socialLinks {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      .photographerContent {
+        .name {
+          color: var(--accent);
+        }
       }
     }
 
@@ -73,32 +188,246 @@
       width: 100%;
       height: 400px;
       overflow: hidden;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: brightness(1) contrast(1.05) saturate(1.1);
+      }
+    }
+    
+    .socialLinks {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      z-index: 3;
+      
+      a {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background: var(--accent);
+          color: var(--text-inverse);
+          transform: scale(1.1);
+        }
       }
     }
 
     .photographerContent {
-      padding: 2rem;
+      padding: 2.5rem;
       text-align: center;
 
-      h3 {
-        color: var(--deep-maroon);
+      .name {
+        color: var(--text-primary);
         font-family: var(--font-heading);
         font-size: 2rem;
-        margin-bottom: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+        
+        @media (max-width: 768px) {
+          font-size: 1.75rem;
+        }
+      }
+      
+      .role {
+        color: var(--accent);
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
-      p {
-        color: var(--warm-grey);
-        font-family: var(--font-body);
+      .bio {
+        color: var(--text-secondary);
         font-size: 1.1rem;
-        line-height: 1.8;
+        line-height: 1.7;
+        margin-bottom: 2rem;
       }
+      
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+        
+        .statItem {
+          text-align: center;
+          padding: 1rem;
+          background: rgba(201, 169, 110, 0.05);
+          border-radius: var(--radius-md);
+          
+          .statNumber {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.25rem;
+          }
+          
+          .statLabel {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+        }
+      }
+      
+      .contactButton {
+        background: transparent;
+        color: var(--text-primary);
+        border: 2px solid var(--text-primary);
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+          transition: left 0.4s ease;
+          z-index: -1;
+        }
+        
+        &:hover {
+          color: var(--text-inverse);
+          border-color: var(--accent);
+          transform: translateY(-2px);
+          
+          &::before {
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.storySection {
+  margin-top: 8rem;
+  padding: 4rem 0;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  animation: scaleIn 0.8s ease-out 0.6s both;
+  
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  
+  h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+  .aboutContainer {
+    padding: 6rem 1rem 4rem;
+  }
+  
+  .heading {
+    margin-bottom: 4rem;
+  }
+  
+  .photographerCard .photographerContent {
+    padding: 2rem;
+    
+    .stats {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+  
+  .storySection {
+    margin-top: 6rem;
+    padding: 3rem 0;
+    
+    .container {
+      padding: 0 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutContainer {
+    padding: 5rem 1rem 3rem;
+  }
+  
+  .photographersGrid {
+    gap: 2rem;
+  }
+  
+  .photographerCard {
+    .photographerImage {
+      height: 300px;
+    }
+    
+    .photographerContent {
+      padding: 1.5rem;
     }
   }
 }

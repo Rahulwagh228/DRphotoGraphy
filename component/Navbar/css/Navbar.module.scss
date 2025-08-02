@@ -1,44 +1,31 @@
 .navbar {
-  background-color: var(--soft-peach);
+  background: rgba(250, 250, 249, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 50;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font-family: 'Montserrat', sans-serif;
+  z-index: 100;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.scrolled {
+    background: rgba(250, 250, 249, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
 
   &Container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .menuItem {
-    text-decoration: none;
-    color: #333;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    position: relative;
-
-    &:hover {
-      color: #666;
-    }
-
-    &.active {
-      color: #BFA75F;
-      font-weight: 600; // Changed to semi-bold
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #BFA75F;
-      }
+    padding: 0 2rem;
+    height: 80px;
+    
+    @media (max-width: 768px) {
+      padding: 0 1rem;
+      height: 70px;
     }
   }
 }
@@ -47,13 +34,21 @@
   &Container {
     display: flex;
     align-items: center;
-    margin-left: 2.5rem;
-    min-height: 4rem;
-    min-width: 4rem;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 
   &Image {
-    margin-right: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 8px rgba(201, 169, 110, 0.2));
+    
+    &:hover {
+      filter: drop-shadow(0 4px 12px rgba(201, 169, 110, 0.3));
+    }
   }
 }
 
@@ -63,46 +58,67 @@
 
     @media (min-width: 768px) {
       display: flex;
-      gap: 2rem;
+      gap: 3rem;
+      align-items: center;
     }
   }
 
   &Item {
-    font-family: 'Montserrat', sans-serif !important;
-    color: var(--darkerPrimary);
+    font-family: var(--font-body);
+    color: var(--text-primary);
     font-weight: 500;
-    font-size: 1.4rem;
-    transition: all 0.3s ease;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    padding: 8px 0;
+    padding: 0.5rem 0;
     text-decoration: none;
+    letter-spacing: 0.3px;
 
-    &::after {
+    &::before {
       content: '';
       position: absolute;
       bottom: -2px;
       left: 0;
       width: 0;
       height: 2px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--darkerPrimary) 100%);
-      transition: width 0.3s ease;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 1px;
     }
 
     &:hover {
-      color: var(--primary);
+      color: var(--accent);
+      transform: translateY(-1px);
 
-      &::after {
+      &::before {
+        width: 100%;
+      }
+    }
+    
+    &.active {
+      color: var(--accent);
+      font-weight: 600;
+      
+      &::before {
         width: 100%;
       }
     }
   }
 
   &Mobile {
-    background-color: var(--soft-peach);
+    background: rgba(250, 250, 249, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     position: absolute;
-    width: 100%;
+    top: 100%;
     left: 0;
-    padding: 1rem 0;
+    right: 0;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-10px);
+    opacity: 0;
+    animation: slideDown 0.3s ease forwards;
 
     @media (min-width: 768px) {
       display: none;
@@ -111,28 +127,95 @@
     .menuItem {
       display: block;
       padding: 1rem 2rem;
-      color: var(--darkerPrimary);
+      color: var(--text-primary);
       text-decoration: none;
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       font-weight: 500;
-      font-family: 'Montserrat', sans-serif !important;
+      font-family: var(--font-body);
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
 
       &:hover {
-        background-color: var(--ivory-white);
+        background: rgba(201, 169, 110, 0.05);
+        color: var(--accent);
+        border-left-color: var(--accent);
+        transform: translateX(5px);
+      }
+      
+      &.active {
+        color: var(--accent);
+        background: rgba(201, 169, 110, 0.05);
+        border-left-color: var(--accent);
+        font-weight: 600;
       }
     }
   }
 
   &Button {
-    display: block;
-    color: var(--darkerPrimary);
-    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--text-primary);
+    background: rgba(201, 169, 110, 0.1);
     border: none;
+    border-radius: 50%;
     cursor: pointer;
-    padding: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @media (min-width: 768px) {
       display: none;
     }
+    
+    &:hover {
+      background: rgba(201, 169, 110, 0.2);
+      transform: scale(1.05);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced focus states for accessibility */
+.menuItem:focus,
+.menuButton:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth scroll behavior when clicking nav links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background: rgba(15, 15, 15, 0.95);
+    border-bottom-color: rgba(201, 169, 110, 0.2);
+    
+    &.scrolled {
+      background: rgba(15, 15, 15, 0.98);
+    }
+  }
+  
+  .menuMobile {
+    background: rgba(15, 15, 15, 0.98);
+    border-bottom-color: rgba(201, 169, 110, 0.2);
   }
 }

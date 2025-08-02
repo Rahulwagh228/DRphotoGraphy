@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -9,6 +9,7 @@ import styles from "./css/Navbar.module.scss";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
   const menuItems = [
@@ -20,16 +21,38 @@ const Navbar = () => {
 
   const isActive = (path: string) => pathname === path;
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
-    <nav className={styles.navbar}>
+    <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={styles.navbarContainer}>
         <Link href="/" className={styles.logoContainer}>
           <Image
             src={Logo}
-            alt="Logo"
-            width={80}
-            height={80}
+            alt="DR Photography Logo"
+            width={60}
+            height={60}
             className={styles.logoImage}
+            priority
           />
         </Link>
 
@@ -52,8 +75,9 @@ const Navbar = () => {
         <button
           className={styles.menuButton}
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
         >
-          {isOpen ? <FiX size={32} /> : <FiMenu size={32} />}
+          {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
       </div>
 

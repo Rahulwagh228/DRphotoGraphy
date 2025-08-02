@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./Portfolio.module.scss";
 
@@ -17,61 +17,115 @@ import other5 from "../../public/assets/portfolio-images/other-5.jpg";
 
 type Category = "wedding" | "birthday" | "other";
 
-const images = {
-  wedding: [image1, image2, image1, image2, image1, image2], // 6 wedding photos
-  birthday: [birthday1, birthday2, birthday3, birthday1, birthday2, birthday3], // 6 birthday photos
-  other: [other1, other2, other3, other4, other5, other1], // 6 other photos
+interface ImageData {
+  src: any;
+  title: string;
+  description: string;
+}
+
+const images: Record<Category, ImageData[]> = {
+  wedding: [
+    { src: image1, title: "Romantic Ceremony", description: "Beautiful wedding moments captured" },
+    { src: image2, title: "Wedding Portraits", description: "Elegant couple photography" },
+    { src: image1, title: "Reception Joy", description: "Celebration and happiness" },
+    { src: image2, title: "Bridal Beauty", description: "Stunning bridal portraits" },
+    { src: image1, title: "Sacred Vows", description: "Intimate ceremony moments" },
+    { src: image2, title: "Wedding Party", description: "Friends and family together" },
+  ],
+  birthday: [
+    { src: birthday1, title: "Birthday Celebration", description: "Joyful birthday moments" },
+    { src: birthday2, title: "Party Fun", description: "Capturing the excitement" },
+    { src: birthday3, title: "Special Moments", description: "Memorable birthday shots" },
+    { src: birthday1, title: "Cake Cutting", description: "Sweet celebration moments" },
+    { src: birthday2, title: "Happy Faces", description: "Pure joy and laughter" },
+    { src: birthday3, title: "Birthday Magic", description: "Creating lasting memories" },
+  ],
+  other: [
+    { src: other1, title: "Portrait Session", description: "Professional headshots" },
+    { src: other2, title: "Event Photography", description: "Corporate and social events" },
+    { src: other3, title: "Lifestyle Shots", description: "Natural and candid moments" },
+    { src: other4, title: "Creative Portraits", description: "Artistic photography" },
+    { src: other5, title: "Family Photos", description: "Cherished family moments" },
+    { src: other1, title: "Professional Work", description: "High-quality photography" },
+  ],
 };
 
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState<Category>("wedding");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleTabChange = (newTab: Category) => {
+    if (newTab === activeTab) return;
+    
+    setIsLoading(true);
+    setTimeout(() => {
+      setActiveTab(newTab);
+      setIsLoading(false);
+    }, 300);
+  };
+
   return (
     <div className={styles.portfolioContainer}>
       <section className={styles.headerSection}>
-        <h1 className={styles.portfolioHeading}>Portfolio</h1>
+        <h1 className={styles.portfolioHeading}>Our Portfolio</h1>
+        <p className={styles.subtitle}>
+          Discover our collection of stunning photographs that capture life's most precious moments
+        </p>
         <div className={styles.tabsContainer}>
           <button
             className={`${styles.tab} ${
               activeTab === "wedding" ? styles.active : ""
             }`}
-            onClick={() => setActiveTab("wedding")}
+            onClick={() => handleTabChange("wedding")}
           >
-            Wedding
+            Weddings
           </button>
           <button
             className={`${styles.tab} ${
               activeTab === "birthday" ? styles.active : ""
             }`}
-            onClick={() => setActiveTab("birthday")}
+            onClick={() => handleTabChange("birthday")}
           >
-            Birthday&apos;s
+            Birthdays
           </button>
           <button
             className={`${styles.tab} ${
               activeTab === "other" ? styles.active : ""
             }`}
-            onClick={() => setActiveTab("other")}
+            onClick={() => handleTabChange("other")}
           >
-            Others
-          </button>{" "}
+            Events & Portraits
+          </button>
         </div>
       </section>
 
       <section className={styles.photosSection}>
-        <div className={styles.imageGrid}>
-          {images[activeTab].map((image, index) => (
-            <div key={index} className={styles.imageWrapper}>
-              <Image
-                src={image}
-                alt={`${activeTab} photo ${index + 1}`}
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={index < 4}
-              />
-            </div>
-          ))}
-        </div>
+        {isLoading ? (
+          <div className={styles.loadingState}>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className={styles.loadingSkeleton} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.imageGrid}>
+            {images[activeTab].map((imageData, index) => (
+              <div key={`${activeTab}-${index}`} className={styles.imageWrapper}>
+                <Image
+                  src={imageData.src}
+                  alt={imageData.title}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={index < 4}
+                />
+                <div className={styles.imageOverlay}>
+                  <div className={styles.overlayTitle}>{imageData.title}</div>
+                  <div className={styles.overlayDescription}>{imageData.description}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

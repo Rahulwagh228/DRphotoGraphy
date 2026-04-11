@@ -553,6 +553,35 @@
   }
 }
 
+.noticeSection {
+  background: rgba(201,169,110,0.05);
+  border: 1px solid rgba(201,169,110,0.16);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.1rem;
+  margin-top: 0.2rem;
+}
+
+.noticeTitle {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--accent-light);
+  margin-bottom: 0.55rem;
+}
+
+.noticeList {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+
+  li {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+}
+
 /* Submit Button */
 .submitButton {
   background: linear-gradient(135deg, #c9a96e 0%, #b08d52 100%);

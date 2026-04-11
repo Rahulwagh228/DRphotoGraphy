@@ -15,9 +15,14 @@ export interface BookingFormData {
   booking_dates: string[]
 }
 
+export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled'
+
 export interface BookingRecord extends BookingFormData {
-  id: number
+  id: string
   created_at: string
+  updated_at?: string | null
+  status?: BookingStatus | string | null
+  phone_alternate: string | null
 }
 
 export async function submitBooking(data: BookingFormData) {
@@ -55,4 +60,22 @@ export async function fetchBookings() {
   }
 
   return (data ?? []) as BookingRecord[]
+}
+
+export async function updateBookingStatus(id: string, status: BookingStatus) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select('*')
+    .single()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data as BookingRecord
 }

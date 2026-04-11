@@ -69,6 +69,7 @@ export default function BookingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -186,6 +187,11 @@ export default function BookingForm() {
       setIsSubmitting(false)
       return
     }
+    if (!acceptedTerms) {
+      setErrorMessage('कृपया अटी व शर्ती मान्य करा')
+      setIsSubmitting(false)
+      return
+    }
 
     try {
       const submissionData: BookingFormData = {
@@ -219,6 +225,7 @@ export default function BookingForm() {
         album_size: '',
         booking_dates: [''],
       })
+      setAcceptedTerms(false)
       setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
       setSubEventDates({ mehandi: '', mandav: '', halad: '', lagn: '' })
     } catch (error: any) {
@@ -541,11 +548,24 @@ export default function BookingForm() {
             </ol>
           </div>
 
+          <div className={styles.termsWrap}>
+            <label htmlFor="accept_terms" className={styles.termsLabel}>
+              <input
+                id="accept_terms"
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className={styles.termsCheckbox}
+              />
+              <span>मी अटी व शर्ती मान्य करतो/करते.</span>
+            </label>
+          </div>
+
           {/* Submit Button */}
           <button
             type="submit"
             className={styles.submitButton}
-            disabled={isSubmitting}
+            disabled={isSubmitting || !acceptedTerms}
           >
             {isSubmitting ? (
               <span className={styles.submitLoading}>

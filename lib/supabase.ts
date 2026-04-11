@@ -17,7 +17,7 @@ export interface BookingFormData {
 
 export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled'
 
-export interface BookingRecord extends BookingFormData {
+export interface BookingRecord extends Omit<BookingFormData, 'phone_alternate'> {
   id: string
   created_at: string
   updated_at?: string | null

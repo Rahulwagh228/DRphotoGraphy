@@ -26,9 +26,9 @@ export default function AboutUs() {
   return (
     <div className={styles.aboutContainer}>
       <div className={styles.heading}>
-        <h1>Meet Our Creative Team</h1>
+        <h1>आमच्या सर्जनशील टीमला भेटा</h1>
         <p className={styles.subtitle}>
-          Passionate photographers dedicated to capturing life's most beautiful moments with artistic vision and technical excellence
+          कलात्मक दृष्टी आणि तांत्रिक उत्कृष्टतेने आयुष्यातील सर्वात सुंदर क्षण टिपण्यासाठी समर्पित उत्साही छायाचित्रकार
         </p>
       </div>
 
@@ -37,46 +37,43 @@ export default function AboutUs() {
           <div className={styles.photographerImage}>
             <Image
               src={other1}
-              alt="Devendra Wagh - Lead Photographer"
+              alt="देवेंद्र वाघ - मुख्य छायाचित्रकार"
               width={600}
               height={400}
               placeholder="blur"
               style={{ objectFit: 'cover' }}
             />
             <div className={styles.socialLinks}>
-              <a href="#" aria-label="Instagram">
+              <a href="#" aria-label="इन्स्टाग्राम">
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="LinkedIn">
+              <a href="#" aria-label="लिंक्डइन">
                 <LinkedInIcon />
               </a>
-              <a href="#" aria-label="Twitter">
+              <a href="#" aria-label="ट्विटर">
                 <TwitterIcon />
               </a>
             </div>
           </div>
           <div className={styles.photographerContent}>
-            <h3 className={styles.name}>Devendra Wagh</h3>
-            <div className={styles.role}>Lead Photographer & Founder</div>
+            <h3 className={styles.name}>देवेंद्र वाघ</h3>
+            <div className={styles.role}>मुख्य छायाचित्रकार आणि संस्थापक</div>
             <p className={styles.bio}>
-              With over 5 years of experience capturing life's most precious
-              moments, Devendra has developed a unique style that blends
-              contemporary techniques with timeless artistry. His passion for
-              photography began during his college years and has evolved into a
-              masterful craft, specializing in wedding photography and portrait
-              sessions.
+              आयुष्यातील अनमोल क्षण टिपण्यात ५ वर्षांहून अधिक अनुभव असलेले देवेंद्र यांनी
+              समकालीन तंत्रज्ञान आणि कालातीत कलात्मकतेचा अनोखा मिलाफ साधलेली एक अद्वितीय
+              शैली विकसित केली आहे. लग्न छायाचित्रण आणि पोर्ट्रेट सत्रांमध्ये विशेष प्रावीण्य.
             </p>
             <div className={styles.stats}>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>300+</span>
-                <span className={styles.statLabel}>Weddings</span>
+                <span className={styles.statNumber}>३००+</span>
+                <span className={styles.statLabel}>लग्नसोहळे</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>5+</span>
-                <span className={styles.statLabel}>Years Exp</span>
+                <span className={styles.statNumber}>५+</span>
+                <span className={styles.statLabel}>वर्षांचा अनुभव</span>
               </div>
             </div>
-            <button className={styles.contactButton}>Contact Devendra</button>
+            <button className={styles.contactButton}>देवेंद्र यांना संपर्क करा</button>
           </div>
         </div>
 
@@ -84,57 +81,55 @@ export default function AboutUs() {
           <div className={styles.photographerImage}>
             <Image
               src={other1}
-              alt="Tushar Gangurde - Creative Photographer"
+              alt="तुषार गांगुर्डे - सर्जनशील छायाचित्रकार"
               width={600}
               height={400}
               placeholder="blur"
               style={{ objectFit: 'cover' }}
             />
             <div className={styles.socialLinks}>
-              <a href="#" aria-label="Instagram">
+              <a href="#" aria-label="इन्स्टाग्राम">
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="LinkedIn">
+              <a href="#" aria-label="लिंक्डइन">
                 <LinkedInIcon />
               </a>
-              <a href="#" aria-label="Twitter">
+              <a href="#" aria-label="ट्विटर">
                 <TwitterIcon />
               </a>
             </div>
           </div>
           <div className={styles.photographerContent}>
-            <h3 className={styles.name}>Tushar Gangurde</h3>
-            <div className={styles.role}>Creative Photographer</div>
+            <h3 className={styles.name}>तुषार गांगुर्डे</h3>
+            <div className={styles.role}>सर्जनशील छायाचित्रकार</div>
             <p className={styles.bio}>
-              Tushar brings a fresh and innovative perspective to photography,
-              with a keen eye for detail and natural light. His journey in
-              photography started with landscape photography, which evolved into
-              capturing beautiful moments at events and celebrations.
-              Specializing in creative portraiture and event photography.
+              तुषार छायाचित्रणात एक ताजी आणि नाविन्यपूर्ण दृष्टी आणतात, तपशील
+              आणि नैसर्गिक प्रकाश यांचे सूक्ष्म निरीक्षण करतात. सर्जनशील पोर्ट्रेचर
+              आणि कार्यक्रम छायाचित्रणात त्यांचे विशेष प्रावीण्य आहे.
             </p>
             <div className={styles.stats}>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>200+</span>
-                <span className={styles.statLabel}>Events</span>
+                <span className={styles.statNumber}>२००+</span>
+                <span className={styles.statLabel}>कार्यक्रम</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>3+</span>
-                <span className={styles.statLabel}>Years Exp</span>
+                <span className={styles.statNumber}>३+</span>
+                <span className={styles.statLabel}>वर्षांचा अनुभव</span>
               </div>
             </div>
-            <button className={styles.contactButton}>Contact Tushar</button>
+            <button className={styles.contactButton}>तुषार यांना संपर्क करा</button>
           </div>
         </div>
       </div>
       
       <div className={styles.storySection}>
         <div className={styles.container}>
-          <h2>Our Story</h2>
+          <h2>आमची कथा</h2>
           <p>
-            Founded with a passion for capturing authentic moments, DR Photography has grown from a small creative venture into a trusted name in professional photography. We believe that every moment tells a story, and our mission is to preserve those stories with artistic excellence and emotional depth.
+            प्रामाणिक क्षण टिपण्याच्या आवडीतून स्थापित, आदिती फोटोग्राफी एका छोट्या सर्जनशील उपक्रमातून व्यावसायिक छायाचित्रणातील एक विश्वासार्ह नाव बनली आहे. आम्ही विश्वास ठेवतो की प्रत्येक क्षण एक कथा सांगतो, आणि त्या कथा कलात्मक उत्कृष्टता आणि भावनिक खोलीने जपणे हे आमचे ध्येय आहे.
           </p>
           <p>
-            Our team combines years of experience with cutting-edge equipment and techniques to deliver photographs that not only document your special occasions but transform them into timeless works of art. From intimate portraits to grand celebrations, we approach each project with dedication, creativity, and attention to detail.
+            आमची टीम अनेक वर्षांचा अनुभव, अत्याधुनिक उपकरणे आणि तंत्रज्ञान यांचा संगम करून असे छायाचित्र तयार करते जे तुमच्या विशेष प्रसंगांना केवळ दस्तऐवजीकृतच करत नाही तर त्यांना कालातीत कलाकृतींमध्ये रूपांतरित करतात.
           </p>
         </div>
       </div>

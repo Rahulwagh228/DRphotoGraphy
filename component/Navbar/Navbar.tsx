@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
-import Logo from "@/public/assets/Logo-updated.png";
 import Image from "next/image";
 import styles from "./css/Navbar.module.scss";
 
@@ -13,10 +12,10 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const menuItems = [
-    { label: "Home", href: "/" },
-    { label: "Services", href: "/services" },
-    { label: "Portfolio", href: "/portfolio" },
-    { label: "About Us", href: "/aboutUs" },
+    { label: "मुख्यपृष्ठ", href: "/" },
+    { label: "सेवा", href: "/services" },
+    { label: "गॅलरी", href: "/portfolio" },
+    { label: "आमच्याबद्दल", href: "/aboutUs" },
   ];
 
   const isActive = (path: string) => pathname === path;
@@ -47,13 +46,14 @@ const Navbar = () => {
       <div className={styles.navbarContainer}>
         <Link href="/" className={styles.logoContainer}>
           <Image
-            src={Logo}
-            alt="DR Photography Logo"
+            src="/assets/aaditi-logo.png"
+            alt="आदिती फोटोग्राफी"
             width={60}
             height={60}
             className={styles.logoImage}
             priority
           />
+          <span className={styles.brandName}>आदिती फोटोग्राफी</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -69,13 +69,16 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
+          <Link href="/form" className={styles.ctaButton}>
+            आत्ताच बुक करा
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
         <button
           className={styles.menuButton}
           onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-label={isOpen ? "मेनू बंद करा" : "मेनू उघडा"}
         >
           {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
@@ -96,6 +99,13 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
+          <Link
+            href="/form"
+            className={styles.ctaMobile}
+            onClick={() => setIsOpen(false)}
+          >
+            आत्ताच बुक करा
+          </Link>
         </div>
       )}
     </nav>

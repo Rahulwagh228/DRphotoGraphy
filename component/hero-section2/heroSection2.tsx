@@ -48,8 +48,8 @@ const HeroSection2 = () => {
   return (
     <section ref={sectionRef} className={styles.container}>
       <div className={styles.sectionTitle}>
-        <h2>Why Choose Our Photography</h2>
-        <p>We combine artistic vision with technical expertise to create timeless memories</p>
+        <h2>आमची छायाचित्रण सेवा का निवडावी?</h2>
+        <p>आम्ही कलात्मक दृष्टी आणि तांत्रिक कौशल्याचा संगम करून चिरंतन आठवणी निर्माण करतो</p>
       </div>
 
       <div className={styles.grid}>
@@ -57,12 +57,12 @@ const HeroSection2 = () => {
           <div className={styles.icon}>
             <PortfolioIcon />
           </div>
-          <h3 className={styles.heading}>Stunning Portfolio</h3>
+          <h3 className={styles.heading}>आकर्षक गॅलरी</h3>
           <p className={styles.description}>
-            Explore our curated collection of breathtaking photographs that showcase our artistic vision and technical mastery across various photography styles.
+            आमच्या कलात्मक दृष्टी आणि तांत्रिक प्रभुत्वाचे प्रदर्शन करणाऱ्या सुंदर छायाचित्रांचा संग्रह पहा. विविध शैलींमधील अप्रतिम फोटोग्राफी अनुभवा.
           </p>
           <Link href="/portfolio">
-            <button className={styles.cta}>View Gallery</button>
+            <button className={styles.cta}>गॅलरी पहा</button>
           </Link>
         </div>
 
@@ -70,12 +70,12 @@ const HeroSection2 = () => {
           <div className={styles.icon}>
             <AboutIcon />
           </div>
-          <h3 className={styles.heading}>Expert Team</h3>
+          <h3 className={styles.heading}>अनुभवी टीम</h3>
           <p className={styles.description}>
-            Meet our passionate photographers with years of experience in capturing life's most precious moments with creativity and professionalism.
+            आयुष्यातील अनमोल क्षण सर्जनशीलता आणि व्यावसायिकतेने टिपण्यात अनुभवी असलेल्या आमच्या उत्साही छायाचित्रकारांना भेटा.
           </p>
           <Link href="/aboutUs">
-            <button className={styles.cta}>Meet Our Team</button>
+            <button className={styles.cta}>आमची टीम भेटा</button>
           </Link>
         </div>
 
@@ -83,12 +83,12 @@ const HeroSection2 = () => {
           <div className={styles.icon}>
             <ServicesIcon />
           </div>
-          <h3 className={styles.heading}>Premium Services</h3>
+          <h3 className={styles.heading}>उत्कृष्ट सेवा</h3>
           <p className={styles.description}>
-            From intimate weddings to corporate events, we offer comprehensive photography packages tailored to your unique needs and vision.
+            लग्नसोहळ्यापासून कॉर्पोरेट कार्यक्रमांपर्यंत, आम्ही तुमच्या विशेष गरजा आणि दृष्टीनुसार सर्वसमावेशक छायाचित्रण पॅकेजेस देतो.
           </p>
           <Link href="/services">
-            <button className={styles.cta}>Our Services</button>
+            <button className={styles.cta}>आमच्या सेवा</button>
           </Link>
         </div>
       </div>
@@ -96,20 +96,20 @@ const HeroSection2 = () => {
       <div className={styles.statsSection}>
         <div className={styles.statsGrid}>
           <div className={styles.statItem}>
-            <span className={styles.statNumber}>500+</span>
-            <span className={styles.statLabel}>Happy Clients</span>
+            <span className={styles.statNumber}>५००+</span>
+            <span className={styles.statLabel}>समाधानी ग्राहक</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statNumber}>1000+</span>
-            <span className={styles.statLabel}>Events Captured</span>
+            <span className={styles.statNumber}>१०००+</span>
+            <span className={styles.statLabel}>कार्यक्रम टिपले</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statNumber}>5+</span>
-            <span className={styles.statLabel}>Years Experience</span>
+            <span className={styles.statNumber}>५+</span>
+            <span className={styles.statLabel}>वर्षांचा अनुभव</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statNumber}>50+</span>
-            <span className={styles.statLabel}>Awards Won</span>
+            <span className={styles.statNumber}>५०+</span>
+            <span className={styles.statLabel}>पुरस्कार मिळवले</span>
           </div>
         </div>
       </div>

@@ -207,6 +207,15 @@
     &:hover img {
       filter: brightness(0) invert(0);
     }
+    
+    svg {
+      fill: #ffffff;
+      transition: fill 0.3s ease;
+    }
+    
+    &:hover svg {
+      fill: #1a1a1a;
+    }
   }
 }
 

@@ -23,16 +23,20 @@ const lagnSubEvents = [
 
 type SubEventKey = typeof lagnSubEvents[number]['key']
 
-const dayOptions = [
-  { value: 0, label: '-- दिवस निवडा --' },
-  { value: 1, label: '१ दिवस' },
-  { value: 2, label: '२ दिवस' },
-  { value: 3, label: '३ दिवस' },
-  { value: 4, label: '४ दिवस' },
-  { value: 5, label: '५ दिवस' },
-  { value: 6, label: '६ दिवस' },
-  { value: 7, label: '७ दिवस' },
-  { value: 8, label: '७+ दिवस' },
+const albumTypeOptions = [
+  { value: '', label: '-- अल्बम प्रकार निवडा --' },
+  { value: 'photobook', label: 'Photobook' },
+  { value: 'karishma', label: 'Karishma' },
+  { value: 'thinkbook', label: 'Thinkbook' },
+]
+
+const albumSizeOptions = [
+  { value: '', label: '-- अल्बम साईज निवडा --' },
+  { value: '250_photos_30_pages', label: '250 photos 30 page' },
+  { value: '300_photos_35_pages', label: '300 photos 35 page' },
+  { value: '350_photos_40_pages', label: '350 photos 40 page' },
+  { value: '400_photos_45_pages', label: '400 photos 45 page' },
+  { value: '500_photos_50_pages', label: '500 photos 50 page' },
 ]
 
 export default function BookingForm() {
@@ -43,7 +47,8 @@ export default function BookingForm() {
     full_address: '',
     program: '',
     other_program: '',
-    num_days: 0,
+    album_type: '',
+    album_size: '',
     booking_dates: [''],
   })
 
@@ -69,7 +74,7 @@ export default function BookingForm() {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'num_days' ? parseInt(value) : value,
+      [name]: value,
     }))
 
     // Reset sub-events when program changes away from लग्न समारंभ
@@ -166,8 +171,13 @@ export default function BookingForm() {
         }
       }
     }
-    if (formData.num_days === 0) {
-      setErrorMessage('कृपया दिवसांची संख्या निवडा')
+    if (!formData.album_type) {
+      setErrorMessage('कृपया अल्बम प्रकार निवडा')
+      setIsSubmitting(false)
+      return
+    }
+    if (!formData.album_size) {
+      setErrorMessage('कृपया अल्बम साईज निवडा')
       setIsSubmitting(false)
       return
     }
@@ -185,7 +195,8 @@ export default function BookingForm() {
         full_address: formData.full_address.trim(),
         program: formData.program === 'इतर' ? `इतर: ${formData.other_program.trim()}` : formData.program,
         other_program: formData.program === 'इतर' ? formData.other_program.trim() : undefined,
-        num_days: formData.num_days,
+        album_type: formData.album_type,
+        album_size: formData.album_size,
         booking_dates: formData.booking_dates.filter(d => d !== ''),
         // Sub-event fields (only when लग्न समारंभ)
         mehandi_date: selectedSubEvents.mehandi ? subEventDates.mehandi : undefined,
@@ -204,7 +215,8 @@ export default function BookingForm() {
         full_address: '',
         program: '',
         other_program: '',
-        num_days: 0,
+        album_type: '',
+        album_size: '',
         booking_dates: [''],
       })
       setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
@@ -217,8 +229,7 @@ export default function BookingForm() {
     }
   }
 
-  // Dynamic date fields based on num_days
-  const showMultipleDates = formData.num_days > 2
+  const showMultipleDates = true
   const isLagnSamarambh = formData.program === 'लग्न समारंभ'
   const isOther = formData.program === 'इतर'
 
@@ -434,25 +445,46 @@ export default function BookingForm() {
             </div>
           )}
 
-          {/* Number of Days */}
-          <div className={styles.formGroup}>
-            <label htmlFor="num_days" className={styles.label}>
-              किती दिवस <span className={styles.required}>*</span>
-            </label>
-            <select
-              id="num_days"
-              name="num_days"
-              value={formData.num_days}
-              onChange={handleChange}
-              className={styles.select}
-              required
-            >
-              {dayOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="album_type" className={styles.label}>
+                अल्बम प्रकार <span className={styles.required}>*</span>
+              </label>
+              <select
+                id="album_type"
+                name="album_type"
+                value={formData.album_type}
+                onChange={handleChange}
+                className={styles.select}
+                required
+              >
+                {albumTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="album_size" className={styles.label}>
+                अल्बम साईज <span className={styles.required}>*</span>
+              </label>
+              <select
+                id="album_size"
+                name="album_size"
+                value={formData.album_size}
+                onChange={handleChange}
+                className={styles.select}
+                required
+              >
+                {albumSizeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Booking Dates */}

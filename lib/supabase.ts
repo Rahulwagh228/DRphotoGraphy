@@ -15,6 +15,11 @@ export interface BookingFormData {
   booking_dates: string[]
 }
 
+export interface BookingRecord extends BookingFormData {
+  id: number
+  created_at: string
+}
+
 export async function submitBooking(data: BookingFormData) {
   const { data: result, error } = await supabase
     .from('bookings')
@@ -37,4 +42,17 @@ export async function submitBooking(data: BookingFormData) {
   }
 
   return result
+}
+
+export async function fetchBookings() {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return (data ?? []) as BookingRecord[]
 }

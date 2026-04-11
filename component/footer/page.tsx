@@ -24,12 +24,12 @@ const Footer = () => {
   ]
 
   const address = {
-    street: "आघार खुर्द, तालुका राहुरी",
-    city: "अहमदनगर",
+    street: "आघार खुर्द, तालुका मालेगाव",
+    city: "नाशिक",
     state: "महाराष्ट्र",
-    zipCode: "४१३७०५",
+    zipCode: "४२३२०८",
     phone: "+91 8766590188",
-    email: "drphotography2612@gmail.com",
+    email: "devendrawagh12@gmail.com",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29894.505306435185!2d74.39981533724554!3d20.51388402913902!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bde853df445c507%3A0xdd2e7d9b47477772!2sD%20R%20PHOTOGRAPHY%20Aghar%20khurd!5e0!3m2!1sen!2sin!4v1744552014200!5m2!1sen!2sin"
   }
 

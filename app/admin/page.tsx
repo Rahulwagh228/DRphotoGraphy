@@ -225,7 +225,6 @@ export default function AdminPage() {
                   <th>Primary</th>
                   <th>Alternate</th>
                   <th>Program</th>
-                  <th>Days</th>
                   <th>Booking Dates</th>
                   <th>Address</th>
                   <th>Created</th>
@@ -246,7 +245,6 @@ export default function AdminPage() {
                       <td>{booking.phone_primary}</td>
                       <td>{booking.phone_alternate || '-'}</td>
                       <td>{booking.program}</td>
-                      <td>{booking.num_days}</td>
                       <td>{formatBookingDates(booking.booking_dates)}</td>
                       <td className={styles.addressCell}>{booking.full_address}</td>
                       <td>{formatCreatedAt(booking.created_at)}</td>

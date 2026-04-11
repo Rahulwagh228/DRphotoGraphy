@@ -12,7 +12,6 @@ export interface BookingFormData {
   full_address: string
   program: string
   other_program?: string
-  num_days?: number
   album_type: string
   album_size: string
   booking_dates: string[]
@@ -34,7 +33,6 @@ export interface BookingRecord {
   created_at: string
   updated_at?: string | null
   status?: BookingStatus | string | null
-  num_days?: number | null
   booking_dates: string[]
   album_type: string
   album_size: string
@@ -57,9 +55,8 @@ export async function submitBooking(data: BookingFormData) {
         full_address: data.full_address,
         program: data.program,
         other_program: data.other_program || null,
-          num_days: data.num_days ?? null,
-          album_type: data.album_type,
-          album_size: data.album_size,
+        album_type: data.album_type,
+        album_size: data.album_size,
         booking_dates: data.booking_dates,
         mehandi_date: data.mehandi_date || null,
         mandav_date: data.mandav_date || null,

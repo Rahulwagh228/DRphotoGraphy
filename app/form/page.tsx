@@ -6,22 +6,22 @@ import styles from './Form.module.scss'
 
 const programOptions = [
   { value: '', label: '-- कार्यक्रम निवडा --' },
-  { value: 'लग्न संपूर्ण सोहळा', label: 'लग्न संपूर्ण सोहळा' },
-  { value: 'सिनेमॅटिक वेडिंग शूट', label: 'सिनेमॅटिक वेडिंग शूट' },
-  { value: 'ड्रोन शूट — एरियल', label: 'ड्रोन शूट — एरियल' },
-  { value: 'साखरपुडा', label: 'साखरपुडा' },
-  { value: 'हळदी समारंभ', label: 'हळदी समारंभ' },
-  { value: 'मेहंदी समारंभ', label: 'मेहंदी समारंभ' },
-  { value: 'संगीत रात्र', label: 'संगीत रात्र' },
-  { value: 'रिसेप्शन', label: 'रिसेप्शन' },
+  { value: 'लग्न समारंभ', label: 'लग्न समारंभ' },
   { value: 'वाढदिवस', label: 'वाढदिवस' },
-  { value: 'बारसे / नामकरण', label: 'बारसे / नामकरण' },
-  { value: 'गृहप्रवेश', label: 'गृहप्रवेश' },
-  { value: 'प्री-वेडिंग शूट', label: 'प्री-वेडिंग शूट' },
-  { value: 'पोर्ट्रेट शूट', label: 'पोर्ट्रेट शूट' },
-  { value: 'कॉर्पोरेट कार्यक्रम', label: 'कॉर्पोरेट कार्यक्रम' },
+  { value: 'डोहाळे', label: 'डोहाळे' },
+  { value: 'साखरपुडा', label: 'साखरपुडा' },
   { value: 'इतर', label: 'इतर' },
 ]
+
+// Sub-events for लग्न समारंभ
+const lagnSubEvents = [
+  { key: 'mehandi', label: 'मेहंदी' },
+  { key: 'mandav', label: 'मंडव' },
+  { key: 'halad', label: 'हळद' },
+  { key: 'lagn', label: 'लग्न' },
+] as const
+
+type SubEventKey = typeof lagnSubEvents[number]['key']
 
 const dayOptions = [
   { value: 0, label: '-- दिवस निवडा --' },
@@ -42,9 +42,25 @@ export default function BookingForm() {
     phone_alternate: '',
     full_address: '',
     program: '',
+    other_program: '',
     num_days: 0,
     booking_dates: [''],
   })
+
+  // Sub-event selection and dates for लग्न समारंभ
+  const [selectedSubEvents, setSelectedSubEvents] = useState<Record<SubEventKey, boolean>>({
+    mehandi: false,
+    mandav: false,
+    halad: false,
+    lagn: false,
+  })
+  const [subEventDates, setSubEventDates] = useState<Record<SubEventKey, string>>({
+    mehandi: '',
+    mandav: '',
+    halad: '',
+    lagn: '',
+  })
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -55,6 +71,32 @@ export default function BookingForm() {
       ...prev,
       [name]: name === 'num_days' ? parseInt(value) : value,
     }))
+
+    // Reset sub-events when program changes away from लग्न समारंभ
+    if (name === 'program' && value !== 'लग्न समारंभ') {
+      setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
+      setSubEventDates({ mehandi: '', mandav: '', halad: '', lagn: '' })
+    }
+
+    // Reset other_program when program changes away from इतर
+    if (name === 'program' && value !== 'इतर') {
+      setFormData(prev => ({ ...prev, other_program: '', [name]: value }))
+    }
+  }
+
+  const handleSubEventToggle = (key: SubEventKey) => {
+    setSelectedSubEvents(prev => {
+      const newState = { ...prev, [key]: !prev[key] }
+      // Clear date if unchecked
+      if (!newState[key]) {
+        setSubEventDates(prevDates => ({ ...prevDates, [key]: '' }))
+      }
+      return newState
+    })
+  }
+
+  const handleSubEventDateChange = (key: SubEventKey, value: string) => {
+    setSubEventDates(prev => ({ ...prev, [key]: value }))
   }
 
   const handleDateChange = (index: number, value: string) => {
@@ -103,6 +145,27 @@ export default function BookingForm() {
       setIsSubmitting(false)
       return
     }
+    if (formData.program === 'इतर' && !formData.other_program.trim()) {
+      setErrorMessage('कृपया कार्यक्रमाचे नाव लिहा')
+      setIsSubmitting(false)
+      return
+    }
+    if (formData.program === 'लग्न समारंभ') {
+      const anySelected = Object.values(selectedSubEvents).some(v => v)
+      if (!anySelected) {
+        setErrorMessage('कृपया किमान एक उपकार्यक्रम निवडा (मेहंदी / मंडव / हळद / लग्न)')
+        setIsSubmitting(false)
+        return
+      }
+      // Validate dates for selected sub-events
+      for (const evt of lagnSubEvents) {
+        if (selectedSubEvents[evt.key] && !subEventDates[evt.key]) {
+          setErrorMessage(`कृपया ${evt.label} ची तारीख भरा`)
+          setIsSubmitting(false)
+          return
+        }
+      }
+    }
     if (formData.num_days === 0) {
       setErrorMessage('कृपया दिवसांची संख्या निवडा')
       setIsSubmitting(false)
@@ -120,9 +183,15 @@ export default function BookingForm() {
         phone_primary: formData.phone_primary.trim(),
         phone_alternate: formData.phone_alternate.trim() || undefined,
         full_address: formData.full_address.trim(),
-        program: formData.program,
+        program: formData.program === 'इतर' ? `इतर: ${formData.other_program.trim()}` : formData.program,
+        other_program: formData.program === 'इतर' ? formData.other_program.trim() : undefined,
         num_days: formData.num_days,
         booking_dates: formData.booking_dates.filter(d => d !== ''),
+        // Sub-event fields (only when लग्न समारंभ)
+        mehandi_date: selectedSubEvents.mehandi ? subEventDates.mehandi : undefined,
+        mandav_date: selectedSubEvents.mandav ? subEventDates.mandav : undefined,
+        halad_date: selectedSubEvents.halad ? subEventDates.halad : undefined,
+        lagn_date: selectedSubEvents.lagn ? subEventDates.lagn : undefined,
       }
 
       await submitBooking(submissionData)
@@ -134,9 +203,12 @@ export default function BookingForm() {
         phone_alternate: '',
         full_address: '',
         program: '',
+        other_program: '',
         num_days: 0,
         booking_dates: [''],
       })
+      setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
+      setSubEventDates({ mehandi: '', mandav: '', halad: '', lagn: '' })
     } catch (error: any) {
       setSubmitStatus('error')
       setErrorMessage(error.message || 'काहीतरी चूक झाली. कृपया पुन्हा प्रयत्न करा.')
@@ -147,6 +219,8 @@ export default function BookingForm() {
 
   // Dynamic date fields based on num_days
   const showMultipleDates = formData.num_days > 2
+  const isLagnSamarambh = formData.program === 'लग्न समारंभ'
+  const isOther = formData.program === 'इतर'
 
   return (
     <div className={styles.formPage}>
@@ -293,6 +367,72 @@ export default function BookingForm() {
               ))}
             </select>
           </div>
+
+          {/* "इतर" (Other) — Custom Program Name */}
+          {isOther && (
+            <div className={`${styles.formGroup} ${styles.subSection}`}>
+              <label htmlFor="other_program" className={styles.label}>
+                कार्यक्रमाचे नाव लिहा <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                id="other_program"
+                name="other_program"
+                value={formData.other_program}
+                onChange={handleChange}
+                placeholder="कार्यक्रमाचे नाव येथे लिहा"
+                className={styles.input}
+                required
+              />
+            </div>
+          )}
+
+          {/* लग्न समारंभ — Sub-events with date pickers */}
+          {isLagnSamarambh && (
+            <div className={styles.subEventsSection}>
+              <label className={styles.label}>
+                उपकार्यक्रम निवडा <span className={styles.required}>*</span>
+                <span className={styles.dateHint}>(तारखांसह)</span>
+              </label>
+              <div className={styles.subEventsGrid}>
+                {lagnSubEvents.map((evt) => (
+                  <div
+                    key={evt.key}
+                    className={`${styles.subEventCard} ${selectedSubEvents[evt.key] ? styles.subEventActive : ''}`}
+                  >
+                    <label className={styles.subEventCheckbox}>
+                      <input
+                        type="checkbox"
+                        checked={selectedSubEvents[evt.key]}
+                        onChange={() => handleSubEventToggle(evt.key)}
+                        className={styles.checkboxInput}
+                      />
+                      <span className={styles.checkboxCustom}>
+                        {selectedSubEvents[evt.key] && (
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
+                      </span>
+                      <span className={styles.subEventLabel}>{evt.label}</span>
+                    </label>
+                    {selectedSubEvents[evt.key] && (
+                      <div className={styles.subEventDateWrap}>
+                        <input
+                          type="date"
+                          value={subEventDates[evt.key]}
+                          onChange={(e) => handleSubEventDateChange(evt.key, e.target.value)}
+                          className={styles.subEventDate}
+                          min={new Date().toISOString().split('T')[0]}
+                          required
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Number of Days */}
           <div className={styles.formGroup}>

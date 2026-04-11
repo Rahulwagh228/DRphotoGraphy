@@ -434,6 +434,125 @@
   }
 }
 
+/* Sub-section (animated slide-in for conditional fields) */
+.subSection {
+  animation: slideDown 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Sub-events section (लग्न समारंभ) */
+.subEventsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  animation: slideDown 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+
+.subEventsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.subEventCard {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(201,169,110,0.08);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  animation: borderPulse 4s ease-in-out infinite;
+
+  &:hover {
+    border-color: rgba(201,169,110,0.18);
+    background: rgba(201,169,110,0.02);
+  }
+}
+
+.subEventActive {
+  border-color: rgba(201,169,110,0.3) !important;
+  background: rgba(201,169,110,0.05) !important;
+  box-shadow: 0 4px 20px rgba(201,169,110,0.08);
+  animation: none;
+}
+
+.subEventCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkboxInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkboxCustom {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(201,169,110,0.2);
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  color: #0a0a0a;
+
+  .subEventActive & {
+    background: linear-gradient(135deg, #c9a96e 0%, #b08d52 100%);
+    border-color: #c9a96e;
+    box-shadow: 0 2px 10px rgba(201,169,110,0.3);
+  }
+}
+
+.subEventLabel {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
+
+  .subEventActive & {
+    color: var(--accent);
+  }
+}
+
+.subEventDateWrap {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(201,169,110,0.06);
+  animation: slideDown 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+.subEventDate {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,169,110,0.12);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-weight: 300;
+  width: 100%;
+  outline: none;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+
+  &:focus {
+    border-color: rgba(201,169,110,0.35);
+    background: rgba(201,169,110,0.03);
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.06);
+  }
+}
+
 /* Submit Button */
 .submitButton {
   background: linear-gradient(135deg, #c9a96e 0%, #b08d52 100%);

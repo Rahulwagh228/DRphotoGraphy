@@ -7,6 +7,8 @@ import styles from './Form.module.scss'
 const programOptions = [
   { value: '', label: '-- कार्यक्रम निवडा --' },
   { value: 'लग्न संपूर्ण सोहळा', label: 'लग्न संपूर्ण सोहळा' },
+  { value: 'सिनेमॅटिक वेडिंग शूट', label: 'सिनेमॅटिक वेडिंग शूट' },
+  { value: 'ड्रोन शूट — एरियल', label: 'ड्रोन शूट — एरियल' },
   { value: 'साखरपुडा', label: 'साखरपुडा' },
   { value: 'हळदी समारंभ', label: 'हळदी समारंभ' },
   { value: 'मेहंदी समारंभ', label: 'मेहंदी समारंभ' },

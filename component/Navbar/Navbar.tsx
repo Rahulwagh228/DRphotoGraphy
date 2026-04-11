@@ -48,12 +48,12 @@ const Navbar = () => {
           <Image
             src="/assets/aaditi-logo.png"
             alt="आदिती फोटोग्राफी"
-            width={60}
-            height={60}
+            width={50}
+            height={50}
             className={styles.logoImage}
             priority
           />
-          <span className={styles.brandName}>आदिती फोटोग्राफी</span>
+          <span className={styles.brandName}>आदिती</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -70,7 +70,7 @@ const Navbar = () => {
             </Link>
           ))}
           <Link href="/form" className={styles.ctaButton}>
-            आत्ताच बुक करा
+            बुक करा
           </Link>
         </div>
 
@@ -80,11 +80,11 @@ const Navbar = () => {
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "मेनू बंद करा" : "मेनू उघडा"}
         >
-          {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          {isOpen ? <FiX size={22} /> : <FiMenu size={22} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — Full Screen Overlay */}
       {isOpen && (
         <div className={styles.menuMobile}>
           {menuItems.map((item) => (

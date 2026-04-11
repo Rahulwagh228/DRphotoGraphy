@@ -17,7 +17,7 @@ const HeroSection = () => {
       <div 
         className={styles.backgroundContainer}
         style={{
-          transform: `translateY(${scrollY * 0.5}px)`,
+          transform: `translateY(${scrollY * 0.3}px)`,
         }}
       >
         <Image
@@ -26,7 +26,7 @@ const HeroSection = () => {
           fill
           style={{ objectFit: 'cover' }}
           priority
-          quality={95}
+          quality={90}
         />
       </div>
 
@@ -36,7 +36,8 @@ const HeroSection = () => {
           <span className={styles.highlight}>क्षण टिपूया</span>
         </h1>
         <p className={styles.subtitle}>
-          तुमच्या अनमोल क्षणांना कलात्मकता आणि व्यावसायिकतेने जपणारी छायाचित्रण सेवा
+          लग्न, ड्रोन एरियल शूट आणि सिनेमॅटिक व्हिडिओग्राफी — 
+          तुमच्या अनमोल क्षणांना कलात्मक स्पर्श
         </p>
         <div className={styles.heroButtons}>
           <Link href="/form">
@@ -48,8 +49,8 @@ const HeroSection = () => {
             <Image
               src="/assets/icons/Callicon.svg"
               alt="कॉल करा"
-              width={20}
-              height={20}
+              width={18}
+              height={18}
               className={styles.callIcon}
             />
             <span>आम्हाला कॉल करा</span>
@@ -59,7 +60,7 @@ const HeroSection = () => {
 
       <div className={styles.scrollIndicator}>
         <div className={styles.scrollArrow}></div>
-        <div className={styles.scrollText}>खाली स्क्रोल करा</div>
+        <div className={styles.scrollText}>स्क्रोल करा</div>
       </div>
     </section>
   )

@@ -40,6 +40,24 @@ const albumSizeOptions = [
   { value: '500_photos_50_pages', label: '500 photos 50 page' },
 ]
 
+const albumPreviewMap: Record<string, { title: string; subtitle: string; image: string }> = {
+  photobook: {
+    title: 'Photobook Sample',
+    subtitle: 'Classic layout with clean full-bleed pages.',
+    image: '/assets/aaditi-logo.png',
+  },
+  karishma: {
+    title: 'Karishma Sample',
+    subtitle: 'Premium theme with rich matte presentation.',
+    image: '/assets/aaditi-logo.png',
+  },
+  thinkbook: {
+    title: 'Thinkbook Sample',
+    subtitle: 'Modern storytelling style with cinematic spreads.',
+    image: '/assets/aaditi-logo.png',
+  },
+}
+
 export default function BookingForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -78,6 +96,7 @@ export default function BookingForm() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [showAlbumPreview, setShowAlbumPreview] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -101,6 +120,10 @@ export default function BookingForm() {
     // Reset event_place when switching to लग्न समारंभ
     if (name === 'program' && value === 'लग्न समारंभ') {
       setFormData(prev => ({ ...prev, event_place: '', [name]: value }))
+    }
+
+    if (name === 'album_type') {
+      setShowAlbumPreview(!!value)
     }
   }
 
@@ -252,6 +275,7 @@ export default function BookingForm() {
   const isLagnSamarambh = formData.program === 'लग्न समारंभ'
   const isOther = formData.program === 'इतर'
   const isNonLagnProgramSelected = !!formData.program && formData.program !== 'लग्न समारंभ'
+  const selectedAlbumPreview = formData.album_type ? albumPreviewMap[formData.album_type] : undefined
 
   return (
     <div className={styles.formPage}>
@@ -492,20 +516,30 @@ export default function BookingForm() {
 
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
-              <label htmlFor="album_type" className={styles.label}>
-                अल्बम प्रकार <span className={styles.required}>*</span>
+              <label htmlFor="album_type" className={`${styles.label} ${styles.albumLabel}`}>
+                <span>
+                  अल्बम प्रकार <span className={styles.required}>*</span>
+                </span>
+                <button
+                  type="button"
+                  className={styles.previewToggle}
+                  onClick={() => setShowAlbumPreview(prev => !prev)}
+                >
+                  <span aria-hidden="true">👁️</span>
+                  <span>See Albums</span>
+                </button>
               </label>
               <select
                 id="album_type"
                 name="album_type"
                 value={formData.album_type}
                 onChange={handleChange}
-                className={styles.select}
+                className={`${styles.select} ${styles.albumSelect}`}
                 required
               >
                 {albumTypeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
-                    {option.label}
+                    {option.value ? `👁 ${option.label}` : option.label}
                   </option>
                 ))}
               </select>
@@ -520,7 +554,7 @@ export default function BookingForm() {
                 name="album_size"
                 value={formData.album_size}
                 onChange={handleChange}
-                className={styles.select}
+                className={`${styles.select} ${styles.albumSelect}`}
                 required
               >
                 {albumSizeOptions.map((option) => (
@@ -531,6 +565,34 @@ export default function BookingForm() {
               </select>
             </div>
           </div>
+
+          {showAlbumPreview && (
+            <div className={`${styles.albumPreviewSection} ${styles.subSection}`}>
+              <div className={styles.albumPreviewHeader}>
+                <h4>Album Look Preview</h4>
+                <p>हे सॅम्पल फोटो आहेत. तुम्ही नंतर तुमचे फोटो बदलू शकता.</p>
+              </div>
+              {selectedAlbumPreview ? (
+                <div className={styles.albumPreviewCard}>
+                  <div className={styles.albumPreviewImageWrap}>
+                    <Image
+                      src={selectedAlbumPreview.image}
+                      alt={selectedAlbumPreview.title}
+                      width={220}
+                      height={150}
+                      className={styles.albumPreviewImage}
+                    />
+                  </div>
+                  <div className={styles.albumPreviewContent}>
+                    <h5>{selectedAlbumPreview.title}</h5>
+                    <p>{selectedAlbumPreview.subtitle}</p>
+                  </div>
+                </div>
+              ) : (
+                <p className={styles.previewHint}>Preview पाहण्यासाठी अल्बम प्रकार निवडा.</p>
+              )}
+            </div>
+          )}
 
           <div className={styles.noticeSection}>
             <h3 className={styles.noticeTitle}>सूचना</h3>

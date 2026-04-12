@@ -51,6 +51,18 @@ function formatBookingDates(dates: string[]) {
     .join(', ')
 }
 
+function formatDateOnly(value?: string | null) {
+  if (!value) return '-'
+  const date = new Date(value)
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleDateString('mr-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      })
+}
+
 export default function AdminPage() {
   const [bookings, setBookings] = useState<BookingRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -129,11 +141,20 @@ export default function AdminPage() {
 
     return bookings.filter((booking) => {
       const haystack = [
+        booking.id,
         booking.name,
         booking.phone_primary,
         booking.phone_alternate || '',
         booking.full_address,
         booking.program,
+        booking.other_program || '',
+        booking.event_place || '',
+        booking.album_type,
+        booking.album_size,
+        booking.mehandi_place || '',
+        booking.mandav_place || '',
+        booking.halad_place || '',
+        booking.lagn_place || '',
       ]
         .join(' ')
         .toLowerCase()
@@ -221,12 +242,25 @@ export default function AdminPage() {
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Primary</th>
                   <th>Alternate</th>
                   <th>Program</th>
+                  <th>Other Program</th>
+                  <th>Event Place</th>
                   <th>Booking Dates</th>
                   <th>Address</th>
+                  <th>Album Type</th>
+                  <th>Album Size</th>
+                  <th>Mehandi Date</th>
+                  <th>Mehandi Place</th>
+                  <th>Mandav Date</th>
+                  <th>Mandav Place</th>
+                  <th>Halad Date</th>
+                  <th>Halad Place</th>
+                  <th>Lagn Date</th>
+                  <th>Lagn Place</th>
                   <th>Created</th>
                   <th>Updated</th>
                   <th>Status</th>
@@ -241,12 +275,25 @@ export default function AdminPage() {
                   return (
                     <tr key={booking.id}>
                       <td>{index + 1}</td>
+                      <td>{booking.id}</td>
                       <td>{booking.name}</td>
                       <td>{booking.phone_primary}</td>
                       <td>{booking.phone_alternate || '-'}</td>
                       <td>{booking.program}</td>
+                      <td>{booking.other_program || '-'}</td>
+                      <td>{booking.event_place || '-'}</td>
                       <td>{formatBookingDates(booking.booking_dates)}</td>
                       <td className={styles.addressCell}>{booking.full_address}</td>
+                      <td>{booking.album_type}</td>
+                      <td>{booking.album_size}</td>
+                      <td>{formatDateOnly(booking.mehandi_date)}</td>
+                      <td>{booking.mehandi_place || '-'}</td>
+                      <td>{formatDateOnly(booking.mandav_date)}</td>
+                      <td>{booking.mandav_place || '-'}</td>
+                      <td>{formatDateOnly(booking.halad_date)}</td>
+                      <td>{booking.halad_place || '-'}</td>
+                      <td>{formatDateOnly(booking.lagn_date)}</td>
+                      <td>{booking.lagn_place || '-'}</td>
                       <td>{formatCreatedAt(booking.created_at)}</td>
                       <td>{booking.updated_at ? formatCreatedAt(booking.updated_at) : '-'}</td>
                       <td>

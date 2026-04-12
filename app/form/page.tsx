@@ -170,6 +170,11 @@ export default function BookingForm() {
           setIsSubmitting(false)
           return
         }
+        if (selectedSubEvents[evt.key] && !subEventPlaces[evt.key].trim()) {
+          setErrorMessage(`कृपया ${evt.label} चे ठिकाण भरा`)
+          setIsSubmitting(false)
+          return
+        }
       }
     }
     if (formData.program && formData.program !== 'लग्न समारंभ' && !formData.event_place.trim()) {
@@ -198,11 +203,10 @@ export default function BookingForm() {
         name: formData.name.trim(),
         phone_primary: formData.phone_primary.trim(),
         phone_alternate: formData.phone_alternate.trim() || undefined,
-        full_address: formData.program !== 'लग्न समारंभ' && formData.event_place.trim()
-          ? `${formData.full_address.trim()} | ठिकाण: ${formData.event_place.trim()}`
-          : formData.full_address.trim(),
+        full_address: formData.full_address.trim(),
         program: formData.program === 'इतर' ? `इतर: ${formData.other_program.trim()}` : formData.program,
         other_program: formData.program === 'इतर' ? formData.other_program.trim() : undefined,
+        event_place: formData.program !== 'लग्न समारंभ' ? formData.event_place.trim() : undefined,
         album_type: formData.album_type,
         album_size: formData.album_size,
         booking_dates: [],
@@ -211,6 +215,10 @@ export default function BookingForm() {
         mandav_date: selectedSubEvents.mandav ? subEventDates.mandav : undefined,
         halad_date: selectedSubEvents.halad ? subEventDates.halad : undefined,
         lagn_date: selectedSubEvents.lagn ? subEventDates.lagn : undefined,
+        mehandi_place: selectedSubEvents.mehandi ? subEventPlaces.mehandi.trim() : undefined,
+        mandav_place: selectedSubEvents.mandav ? subEventPlaces.mandav.trim() : undefined,
+        halad_place: selectedSubEvents.halad ? subEventPlaces.halad.trim() : undefined,
+        lagn_place: selectedSubEvents.lagn ? subEventPlaces.lagn.trim() : undefined,
       }
 
       await submitBooking(submissionData)

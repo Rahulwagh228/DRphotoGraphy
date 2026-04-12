@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { BookingRecord, BookingStatus, fetchBookings, updateBookingStatus } from '@/lib/supabase'
+import { BookingRecord, BookingStatus, fetchBookings, hideBooking, updateBookingStatus } from '@/lib/supabase'
 import styles from './Admin.module.scss'
 
 const AUTH_KEY = 'dr_admin_access'
@@ -130,6 +130,21 @@ export default function AdminPage() {
       setBookings((prev) => prev.map((item) => (item.id === bookingId ? { ...item, ...updated } : item)))
     } catch (err: any) {
       setError(err.message || 'स्टेटस अपडेट करताना समस्या आली')
+    } finally {
+      setUpdatingId('')
+    }
+  }
+
+  const handleDelete = async (bookingId: string, bookingName: string) => {
+    const isConfirmed = window.confirm(`तुम्हाला ${bookingName} ची नोंद delete करायची आहे का?`)
+    if (!isConfirmed) return
+
+    try {
+      setUpdatingId(bookingId)
+      await hideBooking(bookingId)
+      setBookings((prev) => prev.filter((item) => item.id !== bookingId))
+    } catch (err: any) {
+      setError(err.message || 'नोंद delete करताना समस्या आली')
     } finally {
       setUpdatingId('')
     }
@@ -265,6 +280,7 @@ export default function AdminPage() {
                   <th>Updated</th>
                   <th>Status</th>
                   <th>Action</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -314,6 +330,16 @@ export default function AdminPage() {
                             </option>
                           ))}
                         </select>
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          className={styles.deleteBtn}
+                          onClick={() => handleDelete(booking.id, booking.name)}
+                          disabled={isUpdating}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   )

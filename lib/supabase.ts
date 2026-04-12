@@ -39,6 +39,7 @@ export interface BookingRecord {
   created_at: string
   updated_at?: string | null
   status?: BookingStatus | string | null
+  hidden: boolean
   booking_dates: string[]
   album_type: string
   album_size: string
@@ -82,6 +83,7 @@ export async function submitBooking(data: BookingFormData) {
         mandav_place: data.mandav_place || null,
         halad_place: data.halad_place || null,
         lagn_place: data.lagn_place || null,
+        hidden: false,
         created_at: new Date().toISOString(),
       },
     ])
@@ -102,6 +104,7 @@ export async function fetchBookings() {
   const { data, error } = await supabase
     .from('bookings')
     .select('*')
+    .eq('hidden', false)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -109,6 +112,28 @@ export async function fetchBookings() {
   }
 
   return (data ?? []) as BookingRecord[]
+}
+
+export async function hideBooking(id: string) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+  }
+
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({
+      hidden: true,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select('*')
+    .single()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data as BookingRecord
 }
 
 export async function updateBookingStatus(id: string, status: BookingStatus) {

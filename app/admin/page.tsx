@@ -11,6 +11,7 @@ import {
   updateBookingPayments,
   updateBookingStatus,
 } from '@/lib/supabase'
+import toast from 'react-hot-toast'
 import styles from './Admin.module.scss'
 
 const AUTH_KEY = 'dr_admin_access'
@@ -134,6 +135,7 @@ export default function AdminPage() {
     e.preventDefault()
     if (password.trim() !== expectedPassword) {
       setAuthError('चुकीचा पासवर्ड, कृपया पुन्हा प्रयत्न करा.')
+      toast.error('Wrong admin password. Please try again.')
       return
     }
 
@@ -141,6 +143,7 @@ export default function AdminPage() {
     setIsAuthed(true)
     setAuthError('')
     setPassword('')
+    toast.success('Admin login successful')
   }
 
   const handleLogout = () => {
@@ -148,6 +151,7 @@ export default function AdminPage() {
     setIsAuthed(false)
     setBookings([])
     setSearch('')
+    toast.success('Logged out successfully')
   }
 
   const handleStatusChange = async (bookingId: string, newStatus: string) => {
@@ -156,8 +160,10 @@ export default function AdminPage() {
       setUpdatingId(bookingId)
       const updated = await updateBookingStatus(bookingId, normalizedStatus)
       setBookings((prev) => prev.map((item) => (item.id === bookingId ? { ...item, ...updated } : item)))
+      toast.success('Status updated successfully')
     } catch (err: any) {
       setError(err.message || 'स्टेटस अपडेट करताना समस्या आली')
+      toast.error(err?.message || 'Failed to update status')
     } finally {
       setUpdatingId('')
     }
@@ -171,8 +177,10 @@ export default function AdminPage() {
       setUpdatingId(bookingId)
       await hideBooking(bookingId)
       setBookings((prev) => prev.filter((item) => item.id !== bookingId))
+      toast.success('Booking deleted successfully')
     } catch (err: any) {
       setError(err.message || 'नोंद delete करताना समस्या आली')
+      toast.error(err?.message || 'Failed to delete booking')
     } finally {
       setUpdatingId('')
     }
@@ -196,11 +204,13 @@ export default function AdminPage() {
 
     if ((doneVal !== null && (Number.isNaN(doneVal) || doneVal < 0)) || (totalVal !== null && (Number.isNaN(totalVal) || totalVal < 0))) {
       setError('पेमेंट रक्कम वैध आणि 0 पेक्षा मोठी/समान असावी')
+      toast.error('Payment values must be valid and non-negative')
       return
     }
 
     if (doneVal !== null && totalVal !== null && doneVal > totalVal) {
       setError('Done Payment ही Total Payment पेक्षा जास्त असू शकत नाही')
+      toast.error('Done payment cannot be greater than total payment')
       return
     }
 
@@ -216,8 +226,10 @@ export default function AdminPage() {
           total: updated.payment_total === null || updated.payment_total === undefined ? '' : String(updated.payment_total),
         },
       }))
+      toast.success('Payment updated successfully')
     } catch (err: any) {
       setError(err.message || 'पेमेंट अपडेट करताना समस्या आली')
+      toast.error(err?.message || 'Failed to update payment')
     } finally {
       setUpdatingId('')
     }

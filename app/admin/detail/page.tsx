@@ -16,6 +16,7 @@ import {
   updateExpense,
   deleteExpense,
 } from '@/lib/supabase'
+import toast from 'react-hot-toast'
 import styles from './Detail.module.scss'
 
 /* ─── Constants ─── */
@@ -169,6 +170,7 @@ function BookingDetailInner() {
       })
     } catch (err: any) {
       setError(err.message || 'डेटा लोड करताना समस्या आली')
+      toast.error(err?.message || 'Failed to load booking details')
     } finally {
       setLoading(false)
     }
@@ -185,8 +187,10 @@ function BookingDetailInner() {
       setUpdatingId('status')
       const updated = await updateBookingStatus(booking.id, newStatus as BookingStatus)
       setBooking((prev) => (prev ? { ...prev, ...updated } : prev))
+      toast.success('Status updated successfully')
     } catch (err: any) {
       setError(err.message || 'Status update failed')
+      toast.error(err?.message || 'Status update failed')
     } finally {
       setUpdatingId('')
     }
@@ -200,9 +204,11 @@ function BookingDetailInner() {
     try {
       setUpdatingId('delete')
       await hideBooking(booking.id)
+      toast.success('Booking deleted successfully')
       router.replace('/admin')
     } catch (err: any) {
       setError(err.message || 'Delete failed')
+      toast.error(err?.message || 'Delete failed')
     } finally {
       setUpdatingId('')
     }
@@ -219,10 +225,12 @@ function BookingDetailInner() {
       (totalVal !== null && (Number.isNaN(totalVal) || totalVal < 0))
     ) {
       setError('पेमेंट रक्कम वैध आणि 0 पेक्षा मोठी/समान असावी')
+      toast.error('Payment values must be valid and non-negative')
       return
     }
     if (doneVal !== null && totalVal !== null && doneVal > totalVal) {
       setError('Done Payment ही Total Payment पेक्षा जास्त असू शकत नाही')
+      toast.error('Done payment cannot be greater than total payment')
       return
     }
 
@@ -235,8 +243,10 @@ function BookingDetailInner() {
         done: updated.payment_done === null ? '' : String(updated.payment_done),
         total: updated.payment_total === null ? '' : String(updated.payment_total),
       })
+      toast.success('Payment updated successfully')
     } catch (err: any) {
       setError(err.message || 'Payment update failed')
+      toast.error(err?.message || 'Payment update failed')
     } finally {
       setUpdatingId('')
     }
@@ -265,10 +275,12 @@ function BookingDetailInner() {
     const amt = Number(expenseForm.amount)
     if (!expenseForm.person_name.trim()) {
       setError('Person / vendor name is required')
+      toast.error('Person or vendor name is required')
       return
     }
     if (Number.isNaN(amt) || amt < 0) {
       setError('Amount must be a valid positive number')
+      toast.error('Amount must be a valid positive number')
       return
     }
 
@@ -283,6 +295,7 @@ function BookingDetailInner() {
           amount: amt,
         })
         setExpenses((prev) => prev.map((e) => (e.id === updated.id ? updated : e)))
+        toast.success('Expense updated successfully')
       } else {
         const created = await addExpense({
           booking_id: booking.id,
@@ -292,10 +305,12 @@ function BookingDetailInner() {
           amount: amt,
         })
         setExpenses((prev) => [...prev, created])
+        toast.success('Expense added successfully')
       }
       setShowExpenseForm(false)
     } catch (err: any) {
       setError(err.message || 'Expense save failed')
+      toast.error(err?.message || 'Expense save failed')
     } finally {
       setUpdatingId('')
     }
@@ -308,8 +323,10 @@ function BookingDetailInner() {
       setUpdatingId('expense')
       await deleteExpense(expId)
       setExpenses((prev) => prev.filter((e) => e.id !== expId))
+      toast.success('Expense deleted successfully')
     } catch (err: any) {
       setError(err.message || 'Expense delete failed')
+      toast.error(err?.message || 'Expense delete failed')
     } finally {
       setUpdatingId('')
     }

@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import Navbar from "@/component/Navbar/Navbar";
 import Footer from "@/component/footer/page";
+import { Toaster } from 'react-hot-toast'
 
 export default function LayoutWrapper({
   children,
@@ -34,6 +35,17 @@ export default function LayoutWrapper({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3500,
+          style: {
+            background: '#111111',
+            color: '#f2f0eb',
+            border: '1px solid rgba(201,169,110,0.22)',
+          },
+        }}
+      />
       <Navbar />  
       <main style={{ flex: 1, marginTop: '80px' }}>
         {children}

@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { submitBooking, BookingFormData } from '@/lib/supabase'
+import toast from 'react-hot-toast'
 import styles from './Form.module.scss'
 
 const programOptions = [
@@ -213,6 +214,7 @@ export default function BookingForm() {
 
       await submitBooking(submissionData)
       setSubmitStatus('success')
+      toast.success('बुकिंग यशस्वीरित्या पाठवले!')
       // Reset form
       setFormData({
         name: '',

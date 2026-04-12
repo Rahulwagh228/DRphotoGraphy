@@ -1,0 +1,771 @@
+/* ═══════════════════════════════════════════
+   Admin Detail Page — Dark Luxe Cinematic
+   ═══════════════════════════════════════════ */
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.detailPage {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 10%, rgba(201, 169, 110, 0.1), transparent 40%),
+    radial-gradient(circle at 80% 0, rgba(201, 169, 110, 0.07), transparent 35%),
+    linear-gradient(160deg, #050505 0%, #0b0b0b 45%, #101010 100%);
+  padding: 7rem 1rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.bgLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.blobOne,
+.blobTwo {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(10px);
+}
+
+.blobOne {
+  width: 340px;
+  height: 340px;
+  top: -80px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.16), rgba(201, 169, 110, 0));
+}
+
+.blobTwo {
+  width: 400px;
+  height: 400px;
+  left: -120px;
+  bottom: -120px;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.1), rgba(201, 169, 110, 0));
+}
+
+/* ─── Back Button ─── */
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  color: var(--accent-light);
+  border-radius: 12px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.4rem;
+  letter-spacing: 0.04em;
+
+  &:hover {
+    background: rgba(201, 169, 110, 0.1);
+    border-color: rgba(201, 169, 110, 0.35);
+    transform: translateX(-3px);
+  }
+}
+
+/* ─── Panel Container ─── */
+.panel {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: riseIn 0.7s ease;
+}
+
+/* ─── Status Header Bar ─── */
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: rgba(17, 17, 17, 0.8);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  padding: 1.4rem 1.8rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
+}
+
+.statusBarLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin-bottom: 0;
+  }
+
+  .idText {
+    font-size: 0.77rem;
+    color: var(--text-muted);
+    font-family: monospace;
+    word-break: break-all;
+  }
+}
+
+.statusBarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* ─── Badge / Pill Styles ─── */
+.badge {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  background: rgba(201, 169, 110, 0.14);
+  border: 1px solid rgba(201, 169, 110, 0.24);
+  color: var(--accent-light);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+.statuspending {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.36);
+}
+
+.statusconfirmed {
+  background: rgba(96, 165, 250, 0.12);
+  color: #93c5fd;
+  border-color: rgba(96, 165, 250, 0.36);
+}
+
+.statuscompleted {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.32);
+}
+
+.statuscancelled {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.32);
+}
+
+.statusSelect {
+  min-width: 128px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.22);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.83rem;
+  padding: 0.5rem 0.6rem;
+  outline: none;
+
+  &:focus {
+    border-color: rgba(201, 169, 110, 0.45);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.09);
+  }
+
+  option {
+    background: #0d0d0d;
+  }
+}
+
+.deleteBtn {
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
+  border-radius: 10px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(248, 113, 113, 0.2);
+    border-color: rgba(248, 113, 113, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+}
+
+/* ─── Info Grid ─── */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.card {
+  background: rgba(17, 17, 17, 0.8);
+  border: 1px solid rgba(201, 169, 110, 0.12);
+  border-radius: 18px;
+  backdrop-filter: blur(20px);
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s ease;
+}
+
+.cardFull {
+  grid-column: 1 / -1;
+}
+
+.cardTitle {
+  font-size: 0.82rem;
+  color: var(--accent-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardIcon {
+  font-size: 1rem;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.fieldLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.fieldValue {
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* ─── Payment Summary Cards ─── */
+.paymentSummary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.paymentCard {
+  background: rgba(17, 17, 17, 0.8);
+  border: 1px solid rgba(201, 169, 110, 0.12);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  backdrop-filter: blur(20px);
+  text-align: center;
+}
+
+.paymentCardLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.paymentCardValue {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.paymentCardTotal {
+  border-color: rgba(201, 169, 110, 0.25);
+
+  .paymentCardValue {
+    color: var(--accent-light);
+  }
+}
+
+.paymentCardDone {
+  border-color: rgba(74, 222, 128, 0.25);
+
+  .paymentCardValue {
+    color: #4ade80;
+  }
+}
+
+.paymentCardRemaining {
+  border-color: rgba(96, 165, 250, 0.25);
+
+  .paymentCardValue {
+    color: #93c5fd;
+  }
+}
+
+/* ─── Payment Edit Section ─── */
+.paymentEditRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(201, 169, 110, 0.08);
+}
+
+.paymentFieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 140px;
+}
+
+.paymentFieldLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.paymentFieldWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.16);
+}
+
+.currencyPrefix {
+  color: var(--accent-light);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.paymentInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.paymentSaveBtn {
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.12);
+  color: #86efac;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: rgba(74, 222, 128, 0.2);
+    border-color: rgba(74, 222, 128, 0.55);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+}
+
+/* ─── Expenses Section ─── */
+.expenseSection {
+  animation: fadeIn 0.6s ease;
+}
+
+.expenseHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.addExpenseBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  background: linear-gradient(135deg, rgba(201, 169, 110, 0.18), rgba(201, 169, 110, 0.08));
+  color: #f5ead5;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.04em;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(201, 169, 110, 0.12);
+  }
+}
+
+.expenseTableWrap {
+  overflow-x: auto;
+  border: 1px solid rgba(201, 169, 110, 0.1);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(201, 169, 110, 0.04), rgba(255, 255, 255, 0.01) 24%),
+    rgba(255, 255, 255, 0.02);
+  margin-bottom: 1rem;
+}
+
+.expenseTable {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.07);
+    font-size: 0.86rem;
+    vertical-align: middle;
+  }
+
+  th {
+    background: rgba(13, 13, 13, 0.96);
+    color: var(--accent-light);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+  }
+
+  tbody tr:hover {
+    background: rgba(201, 169, 110, 0.06);
+  }
+}
+
+.categoryBadge {
+  display: inline-flex;
+  padding: 0.22rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+
+.catAlbumMaking {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.catEditor {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.catCrew {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.catOther {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.expenseActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.editBtn {
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  background: rgba(96, 165, 250, 0.1);
+  color: #93c5fd;
+  border-radius: 8px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(96, 165, 250, 0.2);
+  }
+}
+
+.expDeleteBtn {
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  background: rgba(248, 113, 113, 0.1);
+  color: #fca5a5;
+  border-radius: 8px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.2);
+  }
+}
+
+/* ─── Expense Summary Row ─── */
+.expenseSummary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(201, 169, 110, 0.1);
+}
+
+.expenseSumCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 169, 110, 0.1);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  text-align: center;
+}
+
+.expenseSumLabel {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.expenseSumValue {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--accent-light);
+}
+
+/* ─── Add / Edit Expense Form ─── */
+.expenseFormOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.25s ease;
+  padding: 1rem;
+}
+
+.expenseForm {
+  background: rgba(17, 17, 17, 0.96);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  border-radius: 20px;
+  padding: 1.8rem;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  animation: riseIn 0.4s ease;
+}
+
+.expenseFormTitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
+  color: var(--text-primary);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.9rem;
+}
+
+.formLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  outline: none;
+  font-family: var(--font-body);
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    border-color: rgba(201, 169, 110, 0.4);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.08);
+  }
+}
+
+.formSelect {
+  option {
+    background: #0d0d0d;
+    color: var(--text-primary);
+  }
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.formBtnRow {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.formSubmitBtn {
+  flex: 1;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.14);
+  color: #86efac;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(74, 222, 128, 0.22);
+  }
+}
+
+.formCancelBtn {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* ─── Loading / Error ─── */
+.infoCard,
+.errorCard {
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.infoCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.15);
+}
+
+.errorCard {
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.26);
+  color: #f87171;
+}
+
+/* ─── No Data ─── */
+.emptyState {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  padding: 1.5rem 0;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .detailPage {
+    padding: 6.25rem 0.75rem 1.5rem;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .paymentSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .statusBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .statusBarRight {
+    justify-content: flex-start;
+  }
+
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .paymentEditRow {
+    flex-direction: column;
+  }
+
+  .expenseSummary {
+    grid-template-columns: 1fr 1fr;
+  }
+}

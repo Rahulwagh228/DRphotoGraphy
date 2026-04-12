@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import { useEffect, useMemo, useState } from 'react'
 import {
   BookingRecord,
@@ -79,6 +81,7 @@ function formatDateOnly(value?: string | null) {
 }
 
 export default function AdminPage() {
+  const router = useRouter()
   const [bookings, setBookings] = useState<BookingRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -369,7 +372,7 @@ export default function AdminPage() {
                       : Math.max(totalVal - doneVal, 0)
 
                   return (
-                    <tr key={booking.id}>
+                    <tr key={booking.id} onClick={() => router.push(`/admin/detail?id=${booking.id}`)} style={{ cursor: 'pointer' }}>
                       <td>{index + 1}</td>
                       <td>{booking.id}</td>
                       <td>{booking.name}</td>
@@ -399,6 +402,7 @@ export default function AdminPage() {
                             step="0.01"
                             value={draft.total}
                             onChange={(e) => handlePaymentDraftChange(booking.id, 'total', e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
                             className={styles.paymentInput}
                             placeholder="Total"
                             disabled={isUpdating}
@@ -414,6 +418,7 @@ export default function AdminPage() {
                             step="0.01"
                             value={draft.done}
                             onChange={(e) => handlePaymentDraftChange(booking.id, 'done', e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
                             className={styles.paymentInput}
                             placeholder="Done"
                             disabled={isUpdating}
@@ -422,7 +427,7 @@ export default function AdminPage() {
                         <button
                           type="button"
                           className={styles.paymentSaveBtn}
-                          onClick={() => handlePaymentSave(booking.id)}
+                          onClick={(e) => { e.stopPropagation(); handlePaymentSave(booking.id) }}
                           disabled={isUpdating}
                         >
                           Save
@@ -443,6 +448,7 @@ export default function AdminPage() {
                           className={styles.statusSelect}
                           value={currentStatus}
                           onChange={(e) => handleStatusChange(booking.id, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
                           disabled={isUpdating}
                         >
                           {statusOptions.map((statusItem) => (
@@ -456,7 +462,7 @@ export default function AdminPage() {
                         <button
                           type="button"
                           className={styles.deleteBtn}
-                          onClick={() => handleDelete(booking.id, booking.name)}
+                          onClick={(e) => { e.stopPropagation(); handleDelete(booking.id, booking.name) }}
                           disabled={isUpdating}
                         >
                           Delete

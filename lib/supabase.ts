@@ -187,3 +187,111 @@ export async function updateBookingPayments(id: string, paymentDone: number | nu
 
   return data as BookingRecord
 }
+
+/* ─────────────────────────────────────────────
+   Booking Expenses — crew / vendor payments
+   ───────────────────────────────────────────── */
+
+export type ExpenseCategory = 'album_making' | 'editor' | 'crew' | 'other'
+
+export interface BookingExpense {
+  id: string
+  booking_id: string
+  category: ExpenseCategory
+  person_name: string
+  description: string
+  amount: number
+  created_at: string
+  updated_at?: string | null
+}
+
+export async function fetchBookingById(id: string) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing.')
+  }
+
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) throw new Error(error.message)
+  return data as BookingRecord
+}
+
+export async function fetchExpensesByBookingId(bookingId: string) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing.')
+  }
+
+  const { data, error } = await supabase
+    .from('booking_expenses')
+    .select('*')
+    .eq('booking_id', bookingId)
+    .order('created_at', { ascending: true })
+
+  if (error) throw new Error(error.message)
+  return (data ?? []) as BookingExpense[]
+}
+
+export async function addExpense(expense: {
+  booking_id: string
+  category: ExpenseCategory
+  person_name: string
+  description?: string
+  amount: number
+}) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing.')
+  }
+
+  const { data, error } = await supabase
+    .from('booking_expenses')
+    .insert([
+      {
+        booking_id: expense.booking_id,
+        category: expense.category,
+        person_name: expense.person_name,
+        description: expense.description || '',
+        amount: expense.amount,
+      },
+    ])
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return data as BookingExpense
+}
+
+export async function updateExpense(
+  expenseId: string,
+  updates: Partial<Pick<BookingExpense, 'category' | 'person_name' | 'description' | 'amount'>>
+) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing.')
+  }
+
+  const { data, error } = await supabase
+    .from('booking_expenses')
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq('id', expenseId)
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return data as BookingExpense
+}
+
+export async function deleteExpense(expenseId: string) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing.')
+  }
+
+  const { error } = await supabase
+    .from('booking_expenses')
+    .delete()
+    .eq('id', expenseId)
+
+  if (error) throw new Error(error.message)
+}

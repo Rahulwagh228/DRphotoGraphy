@@ -48,9 +48,10 @@ export default function BookingForm() {
     full_address: '',
     program: '',
     other_program: '',
+    event_place: '',
     album_type: '',
     album_size: '',
-    booking_dates: [''],
+    booking_dates: [],
   })
 
   // Sub-event selection and dates for लग्न समारंभ
@@ -96,6 +97,11 @@ export default function BookingForm() {
     if (name === 'program' && value !== 'इतर') {
       setFormData(prev => ({ ...prev, other_program: '', [name]: value }))
     }
+
+    // Reset event_place when switching to लग्न समारंभ
+    if (name === 'program' && value === 'लग्न समारंभ') {
+      setFormData(prev => ({ ...prev, event_place: '', [name]: value }))
+    }
   }
 
   const handleSubEventToggle = (key: SubEventKey) => {
@@ -116,25 +122,6 @@ export default function BookingForm() {
 
   const handleSubEventPlaceChange = (key: SubEventKey, value: string) => {
     setSubEventPlaces(prev => ({ ...prev, [key]: value }))
-  }
-
-  const handleDateChange = (index: number, value: string) => {
-    const newDates = [...formData.booking_dates]
-    newDates[index] = value
-    setFormData(prev => ({ ...prev, booking_dates: newDates }))
-  }
-
-  const addDateField = () => {
-    setFormData(prev => ({
-      ...prev,
-      booking_dates: [...prev.booking_dates, ''],
-    }))
-  }
-
-  const removeDateField = (index: number) => {
-    if (formData.booking_dates.length <= 1) return
-    const newDates = formData.booking_dates.filter((_, i) => i !== index)
-    setFormData(prev => ({ ...prev, booking_dates: newDates }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -185,6 +172,11 @@ export default function BookingForm() {
         }
       }
     }
+    if (formData.program && formData.program !== 'लग्न समारंभ' && !formData.event_place.trim()) {
+      setErrorMessage('कृपया कार्यक्रमाचे ठिकाण भरा')
+      setIsSubmitting(false)
+      return
+    }
     if (!formData.album_type) {
       setErrorMessage('कृपया अल्बम प्रकार निवडा')
       setIsSubmitting(false)
@@ -192,11 +184,6 @@ export default function BookingForm() {
     }
     if (!formData.album_size) {
       setErrorMessage('कृपया अल्बम साईज निवडा')
-      setIsSubmitting(false)
-      return
-    }
-    if (!formData.booking_dates[0]) {
-      setErrorMessage('कृपया किमान एक बुकिंग तारीख भरा')
       setIsSubmitting(false)
       return
     }
@@ -211,12 +198,14 @@ export default function BookingForm() {
         name: formData.name.trim(),
         phone_primary: formData.phone_primary.trim(),
         phone_alternate: formData.phone_alternate.trim() || undefined,
-        full_address: formData.full_address.trim(),
+        full_address: formData.program !== 'लग्न समारंभ' && formData.event_place.trim()
+          ? `${formData.full_address.trim()} | ठिकाण: ${formData.event_place.trim()}`
+          : formData.full_address.trim(),
         program: formData.program === 'इतर' ? `इतर: ${formData.other_program.trim()}` : formData.program,
         other_program: formData.program === 'इतर' ? formData.other_program.trim() : undefined,
         album_type: formData.album_type,
         album_size: formData.album_size,
-        booking_dates: formData.booking_dates.filter(d => d !== ''),
+        booking_dates: [],
         // Sub-event fields (only when लग्न समारंभ)
         mehandi_date: selectedSubEvents.mehandi ? subEventDates.mehandi : undefined,
         mandav_date: selectedSubEvents.mandav ? subEventDates.mandav : undefined,
@@ -235,9 +224,10 @@ export default function BookingForm() {
         full_address: '',
         program: '',
         other_program: '',
+        event_place: '',
         album_type: '',
         album_size: '',
-        booking_dates: [''],
+        booking_dates: [],
       })
       setAcceptedTerms(false)
       setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
@@ -251,9 +241,9 @@ export default function BookingForm() {
     }
   }
 
-  const showMultipleDates = true
   const isLagnSamarambh = formData.program === 'लग्न समारंभ'
   const isOther = formData.program === 'इतर'
+  const isNonLagnProgramSelected = !!formData.program && formData.program !== 'लग्न समारंभ'
 
   return (
     <div className={styles.formPage}>
@@ -401,6 +391,24 @@ export default function BookingForm() {
             </select>
           </div>
 
+          {isNonLagnProgramSelected && (
+            <div className={`${styles.formGroup} ${styles.subSection}`}>
+              <label htmlFor="event_place" className={styles.label}>
+                ठिकाण <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                id="event_place"
+                name="event_place"
+                value={formData.event_place}
+                onChange={handleChange}
+                placeholder="कार्यक्रमाचे ठिकाण लिहा"
+                className={styles.input}
+                required
+              />
+            </div>
+          )}
+
           {/* "इतर" (Other) — Custom Program Name */}
           {isOther && (
             <div className={`${styles.formGroup} ${styles.subSection}`}>
@@ -513,47 +521,6 @@ export default function BookingForm() {
                   </option>
                 ))}
               </select>
-            </div>
-          </div>
-
-          {/* Booking Dates */}
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
-              बुकिंग तारीख {showMultipleDates && <span className={styles.dateHint}>(अनेक तारखा भरता येतील)</span>}
-              <span className={styles.required}>*</span>
-            </label>
-            <div className={styles.datesContainer}>
-              {formData.booking_dates.map((date, index) => (
-                <div key={index} className={styles.dateRow}>
-                  <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => handleDateChange(index, e.target.value)}
-                    className={styles.input}
-                    required={index === 0}
-                    min={new Date().toISOString().split('T')[0]}
-                  />
-                  {formData.booking_dates.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeDateField(index)}
-                      className={styles.removeDateBtn}
-                      aria-label="तारीख काढा"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
-              ))}
-              {showMultipleDates && (
-                <button
-                  type="button"
-                  onClick={addDateField}
-                  className={styles.addDateBtn}
-                >
-                  + आणखी तारीख जोडा
-                </button>
-              )}
             </div>
           </div>
 

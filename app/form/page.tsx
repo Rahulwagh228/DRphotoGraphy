@@ -66,6 +66,12 @@ export default function BookingForm() {
     halad: '',
     lagn: '',
   })
+  const [subEventPlaces, setSubEventPlaces] = useState<Record<SubEventKey, string>>({
+    mehandi: '',
+    mandav: '',
+    halad: '',
+    lagn: '',
+  })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -83,6 +89,7 @@ export default function BookingForm() {
     if (name === 'program' && value !== 'लग्न समारंभ') {
       setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
       setSubEventDates({ mehandi: '', mandav: '', halad: '', lagn: '' })
+      setSubEventPlaces({ mehandi: '', mandav: '', halad: '', lagn: '' })
     }
 
     // Reset other_program when program changes away from इतर
@@ -97,6 +104,7 @@ export default function BookingForm() {
       // Clear date if unchecked
       if (!newState[key]) {
         setSubEventDates(prevDates => ({ ...prevDates, [key]: '' }))
+        setSubEventPlaces(prevPlaces => ({ ...prevPlaces, [key]: '' }))
       }
       return newState
     })
@@ -104,6 +112,10 @@ export default function BookingForm() {
 
   const handleSubEventDateChange = (key: SubEventKey, value: string) => {
     setSubEventDates(prev => ({ ...prev, [key]: value }))
+  }
+
+  const handleSubEventPlaceChange = (key: SubEventKey, value: string) => {
+    setSubEventPlaces(prev => ({ ...prev, [key]: value }))
   }
 
   const handleDateChange = (index: number, value: string) => {
@@ -230,6 +242,7 @@ export default function BookingForm() {
       setAcceptedTerms(false)
       setSelectedSubEvents({ mehandi: false, mandav: false, halad: false, lagn: false })
       setSubEventDates({ mehandi: '', mandav: '', halad: '', lagn: '' })
+      setSubEventPlaces({ mehandi: '', mandav: '', halad: '', lagn: '' })
     } catch (error: any) {
       setSubmitStatus('error')
       setErrorMessage(error.message || 'काहीतरी चूक झाली. कृपया पुन्हा प्रयत्न करा.')
@@ -445,6 +458,13 @@ export default function BookingForm() {
                           className={styles.subEventDate}
                           min={new Date().toISOString().split('T')[0]}
                           required
+                        />
+                        <input
+                          type="text"
+                          value={subEventPlaces[evt.key]}
+                          onChange={(e) => handleSubEventPlaceChange(evt.key, e.target.value)}
+                          className={styles.subEventDate}
+                          placeholder={`${evt.label} चे ठिकाण`}
                         />
                       </div>
                     )}

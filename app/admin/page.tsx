@@ -1,7 +1,14 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { BookingRecord, BookingStatus, fetchBookings, hideBooking, updateBookingStatus } from '@/lib/supabase'
+import {
+  BookingRecord,
+  BookingStatus,
+  fetchBookings,
+  hideBooking,
+  updateBookingPayments,
+  updateBookingStatus,
+} from '@/lib/supabase'
 import styles from './Admin.module.scss'
 
 const AUTH_KEY = 'dr_admin_access'
@@ -51,6 +58,14 @@ function formatBookingDates(dates: string[]) {
     .join(', ')
 }
 
+function formatMoney(value?: number | null) {
+  if (value === null || value === undefined) return '-'
+  return new Intl.NumberFormat('en-IN', {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  }).format(value)
+}
+
 function formatDateOnly(value?: string | null) {
   if (!value) return '-'
   const date = new Date(value)
@@ -72,6 +87,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
   const [updatingId, setUpdatingId] = useState('')
+  const [paymentDrafts, setPaymentDrafts] = useState<Record<string, { done: string; total: string }>>({})
 
   const expectedPassword = process.env.NEXT_PUBLIC_ADMIN_PANEL_PASSWORD || FALLBACK_ADMIN_PASSWORD
 
@@ -92,6 +108,15 @@ export default function AdminPage() {
         setLoading(true)
         const data = await fetchBookings()
         setBookings(data)
+        setPaymentDrafts(
+          data.reduce<Record<string, { done: string; total: string }>>((acc, item) => {
+            acc[item.id] = {
+              done: item.payment_done === null || item.payment_done === undefined ? '' : String(item.payment_done),
+              total: item.payment_total === null || item.payment_total === undefined ? '' : String(item.payment_total),
+            }
+            return acc
+          }, {})
+        )
       } catch (err: any) {
         setError(err.message || 'डेटा लोड करताना समस्या आली')
       } finally {
@@ -145,6 +170,51 @@ export default function AdminPage() {
       setBookings((prev) => prev.filter((item) => item.id !== bookingId))
     } catch (err: any) {
       setError(err.message || 'नोंद delete करताना समस्या आली')
+    } finally {
+      setUpdatingId('')
+    }
+  }
+
+  const handlePaymentDraftChange = (bookingId: string, field: 'done' | 'total', value: string) => {
+    setPaymentDrafts((prev) => ({
+      ...prev,
+      [bookingId]: {
+        done: prev[bookingId]?.done ?? '',
+        total: prev[bookingId]?.total ?? '',
+        [field]: value,
+      },
+    }))
+  }
+
+  const handlePaymentSave = async (bookingId: string) => {
+    const draft = paymentDrafts[bookingId] || { done: '', total: '' }
+    const doneVal = draft.done.trim() === '' ? null : Number(draft.done)
+    const totalVal = draft.total.trim() === '' ? null : Number(draft.total)
+
+    if ((doneVal !== null && (Number.isNaN(doneVal) || doneVal < 0)) || (totalVal !== null && (Number.isNaN(totalVal) || totalVal < 0))) {
+      setError('पेमेंट रक्कम वैध आणि 0 पेक्षा मोठी/समान असावी')
+      return
+    }
+
+    if (doneVal !== null && totalVal !== null && doneVal > totalVal) {
+      setError('Done Payment ही Total Payment पेक्षा जास्त असू शकत नाही')
+      return
+    }
+
+    try {
+      setError('')
+      setUpdatingId(bookingId)
+      const updated = await updateBookingPayments(bookingId, doneVal, totalVal)
+      setBookings((prev) => prev.map((item) => (item.id === bookingId ? { ...item, ...updated } : item)))
+      setPaymentDrafts((prev) => ({
+        ...prev,
+        [bookingId]: {
+          done: updated.payment_done === null || updated.payment_done === undefined ? '' : String(updated.payment_done),
+          total: updated.payment_total === null || updated.payment_total === undefined ? '' : String(updated.payment_total),
+        },
+      }))
+    } catch (err: any) {
+      setError(err.message || 'पेमेंट अपडेट करताना समस्या आली')
     } finally {
       setUpdatingId('')
     }
@@ -276,6 +346,9 @@ export default function AdminPage() {
                   <th>Halad Place</th>
                   <th>Lagn Date</th>
                   <th>Lagn Place</th>
+                  <th>Total Payment</th>
+                  <th>Done Payment</th>
+                  <th>Remaining</th>
                   <th>Created</th>
                   <th>Updated</th>
                   <th>Status</th>
@@ -287,6 +360,13 @@ export default function AdminPage() {
                 {filteredBookings.map((booking, index) => {
                   const currentStatus = booking.status || 'pending'
                   const isUpdating = updatingId === booking.id
+                  const draft = paymentDrafts[booking.id] || { done: '', total: '' }
+                  const doneVal = draft.done.trim() === '' ? null : Number(draft.done)
+                  const totalVal = draft.total.trim() === '' ? null : Number(draft.total)
+                  const remainingVal =
+                    totalVal === null || Number.isNaN(totalVal) || doneVal === null || Number.isNaN(doneVal)
+                      ? booking.payment_remaining
+                      : Math.max(totalVal - doneVal, 0)
 
                   return (
                     <tr key={booking.id}>
@@ -310,6 +390,47 @@ export default function AdminPage() {
                       <td>{booking.halad_place || '-'}</td>
                       <td>{formatDateOnly(booking.lagn_date)}</td>
                       <td>{booking.lagn_place || '-'}</td>
+                      <td>
+                        <div className={styles.paymentFieldWrap}>
+                          <span className={styles.currencyPrefix}>Rs.</span>
+                          <input
+                            type="number"
+                            min={0}
+                            step="0.01"
+                            value={draft.total}
+                            onChange={(e) => handlePaymentDraftChange(booking.id, 'total', e.target.value)}
+                            className={styles.paymentInput}
+                            placeholder="Total"
+                            disabled={isUpdating}
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <div className={styles.paymentFieldWrap}>
+                          <span className={styles.currencyPrefix}>Rs.</span>
+                          <input
+                            type="number"
+                            min={0}
+                            step="0.01"
+                            value={draft.done}
+                            onChange={(e) => handlePaymentDraftChange(booking.id, 'done', e.target.value)}
+                            className={styles.paymentInput}
+                            placeholder="Done"
+                            disabled={isUpdating}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          className={styles.paymentSaveBtn}
+                          onClick={() => handlePaymentSave(booking.id)}
+                          disabled={isUpdating}
+                        >
+                          Save
+                        </button>
+                      </td>
+                      <td>
+                        <span className={styles.remainingBadge}>Rs. {formatMoney(remainingVal)}</span>
+                      </td>
                       <td>{formatCreatedAt(booking.created_at)}</td>
                       <td>{booking.updated_at ? formatCreatedAt(booking.updated_at) : '-'}</td>
                       <td>

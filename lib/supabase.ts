@@ -54,6 +54,9 @@ export interface BookingRecord {
   mandav_place: string | null
   halad_place: string | null
   lagn_place: string | null
+  payment_total: number | null
+  payment_done: number | null
+  payment_remaining: number | null
 }
 
 export async function submitBooking(data: BookingFormData) {
@@ -145,6 +148,33 @@ export async function updateBookingStatus(id: string, status: BookingStatus) {
     .from('bookings')
     .update({
       status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select('*')
+    .single()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data as BookingRecord
+}
+
+export async function updateBookingPayments(id: string, paymentDone: number | null, paymentTotal: number | null) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+  }
+
+  const computedRemaining =
+    paymentTotal === null || paymentDone === null ? null : Math.max(paymentTotal - paymentDone, 0)
+
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({
+      payment_done: paymentDone,
+      payment_total: paymentTotal,
+      payment_remaining: computedRemaining,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)

@@ -331,6 +331,73 @@
   }
 }
 
+.paymentFieldWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 170px;
+  padding: 0.35rem 0.45rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.16);
+}
+
+.currencyPrefix {
+  color: var(--accent-light);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.paymentInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.paymentSaveBtn {
+  margin-top: 0.45rem;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.12);
+  color: #86efac;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(74, 222, 128, 0.2);
+    border-color: rgba(74, 222, 128, 0.55);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+}
+
+.remainingBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  padding: 0.32rem 0.62rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(96, 165, 250, 0.36);
+  background: rgba(96, 165, 250, 0.12);
+  color: #bfdbfe;
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+}
+
 @media (max-width: 940px) {
   .adminPage {
     padding: 6.25rem 0.75rem 1.5rem;

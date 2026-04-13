@@ -499,6 +499,10 @@ function BookingDetailInner() {
                 <span className={styles.fieldLabel}>Album Size</span>
                 <span className={styles.fieldValue}>{booking.album_size}</span>
               </div>
+              <div className={styles.field}>
+                <span className={styles.fieldLabel}>Shooting Duration</span>
+                <span className={styles.fieldValue}>{booking.shooting_duration || '-'}</span>
+              </div>
             </div>
           </div>
 

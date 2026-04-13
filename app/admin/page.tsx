@@ -353,14 +353,6 @@ export default function AdminPage() {
                   <th>Address</th>
                   <th>Album Type</th>
                   <th>Album Size</th>
-                  <th>Mehandi Date</th>
-                  <th>Mehandi Place</th>
-                  <th>Mandav Date</th>
-                  <th>Mandav Place</th>
-                  <th>Halad Date</th>
-                  <th>Halad Place</th>
-                  <th>Lagn Date</th>
-                  <th>Lagn Place</th>
                   <th>Total Payment</th>
                   <th>Done Payment</th>
                   <th>Remaining</th>
@@ -397,14 +389,6 @@ export default function AdminPage() {
                       <td className={styles.addressCell}>{booking.full_address}</td>
                       <td>{booking.album_type}</td>
                       <td>{booking.album_size}</td>
-                      <td>{formatDateOnly(booking.mehandi_date)}</td>
-                      <td>{booking.mehandi_place || '-'}</td>
-                      <td>{formatDateOnly(booking.mandav_date)}</td>
-                      <td>{booking.mandav_place || '-'}</td>
-                      <td>{formatDateOnly(booking.halad_date)}</td>
-                      <td>{booking.halad_place || '-'}</td>
-                      <td>{formatDateOnly(booking.lagn_date)}</td>
-                      <td>{booking.lagn_place || '-'}</td>
                       <td>
                         <div className={styles.paymentFieldWrap}>
                           <span className={styles.currencyPrefix}>Rs.</span>

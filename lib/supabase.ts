@@ -15,6 +15,7 @@ export interface BookingFormData {
   event_place?: string
   album_type: string
   album_size: string
+  shooting_duration: string
   booking_dates: string[]
   // लग्न समारंभ sub-event dates
   mehandi_date?: string
@@ -43,6 +44,7 @@ export interface BookingRecord {
   booking_dates: string[]
   album_type: string
   album_size: string
+  shooting_duration: string | null
   phone_alternate: string | null
   other_program: string | null
   event_place: string | null
@@ -77,6 +79,7 @@ export async function submitBooking(data: BookingFormData) {
         event_place: data.event_place || null,
         album_type: data.album_type,
         album_size: data.album_size,
+        shooting_duration: data.shooting_duration || null,
         booking_dates: data.booking_dates,
         mehandi_date: data.mehandi_date || null,
         mandav_date: data.mandav_date || null,

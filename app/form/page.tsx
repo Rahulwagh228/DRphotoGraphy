@@ -40,6 +40,15 @@ const albumSizeOptions = [
   { value: '500_photos_50_pages', label: '500 photos 50 page' },
 ]
 
+const shootingDurationOptions = [
+  { value: '', label: '-- शूटिंग कालावधी निवडा --' },
+  { value: '२ तास', label: '२ तास' },
+  { value: '२.५ तास', label: '२.५ तास' },
+  { value: '३ तास', label: '३ तास' },
+  { value: '४ तास', label: '४ तास' },
+  { value: 'शूटिंग नाही', label: 'शूटिंग नाही' },
+]
+
 const albumPreviewMap: Record<string, { title: string; subtitle: string; image: string }> = {
   photobook: {
     title: 'Photobook Sample',
@@ -69,6 +78,7 @@ export default function BookingForm() {
     event_place: '',
     album_type: '',
     album_size: '',
+    shooting_duration: '',
     booking_dates: [],
   })
 
@@ -215,6 +225,11 @@ export default function BookingForm() {
       setIsSubmitting(false)
       return
     }
+    if (!formData.shooting_duration) {
+      setErrorMessage('कृपया शूटिंग कालावधी निवडा')
+      setIsSubmitting(false)
+      return
+    }
     if (!acceptedTerms) {
       setErrorMessage('कृपया अटी व शर्ती मान्य करा')
       setIsSubmitting(false)
@@ -232,6 +247,7 @@ export default function BookingForm() {
         event_place: formData.program !== 'लग्न समारंभ' ? formData.event_place.trim() : undefined,
         album_type: formData.album_type,
         album_size: formData.album_size,
+        shooting_duration: formData.shooting_duration,
         booking_dates: [],
         // Sub-event fields (only when लग्न समारंभ)
         mehandi_date: selectedSubEvents.mehandi ? subEventDates.mehandi : undefined,
@@ -258,6 +274,7 @@ export default function BookingForm() {
         event_place: '',
         album_type: '',
         album_size: '',
+        shooting_duration: '',
         booking_dates: [],
       })
       setAcceptedTerms(false)
@@ -564,6 +581,26 @@ export default function BookingForm() {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="shooting_duration" className={styles.label}>
+              शूटिंग कालावधी <span className={styles.required}>*</span>
+            </label>
+            <select
+              id="shooting_duration"
+              name="shooting_duration"
+              value={formData.shooting_duration}
+              onChange={handleChange}
+              className={`${styles.select} ${styles.albumSelect}`}
+              required
+            >
+              {shootingDurationOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {showAlbumPreview && (

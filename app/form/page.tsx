@@ -77,6 +77,7 @@ export default function BookingForm() {
     program: '',
     other_program: '',
     event_place: '',
+    booking_date: '',
     album_type: '',
     album_size: '',
     shooting_duration: '',
@@ -130,7 +131,11 @@ export default function BookingForm() {
 
     // Reset event_place when switching to लग्न समारंभ
     if (name === 'program' && value === 'लग्न समारंभ') {
-      setFormData(prev => ({ ...prev, event_place: '', [name]: value }))
+      setFormData(prev => ({ ...prev, event_place: '', booking_date: '', [name]: value }))
+    }
+
+    if (name === 'program' && value !== 'लग्न समारंभ') {
+      setFormData(prev => ({ ...prev, booking_date: '', [name]: value }))
     }
 
     if (name === 'album_type') {
@@ -216,6 +221,11 @@ export default function BookingForm() {
       setIsSubmitting(false)
       return
     }
+    if (formData.program && formData.program !== 'लग्न समारंभ' && !formData.booking_date) {
+      setErrorMessage('कृपया बुकिंग तारीख निवडा')
+      setIsSubmitting(false)
+      return
+    }
     if (!formData.album_type) {
       setErrorMessage('कृपया अल्बम प्रकार निवडा')
       setIsSubmitting(false)
@@ -249,7 +259,7 @@ export default function BookingForm() {
         album_type: formData.album_type,
         album_size: formData.album_size,
         shooting_duration: formData.shooting_duration,
-        booking_dates: [],
+        booking_dates: formData.program !== 'लग्न समारंभ' && formData.booking_date ? [formData.booking_date] : [],
         // Sub-event fields (only when लग्न समारंभ)
         mehandi_date: selectedSubEvents.mehandi ? subEventDates.mehandi : undefined,
         mandav_date: selectedSubEvents.mandav ? subEventDates.mandav : undefined,
@@ -273,6 +283,7 @@ export default function BookingForm() {
         program: '',
         other_program: '',
         event_place: '',
+        booking_date: '',
         album_type: '',
         album_size: '',
         shooting_duration: '',
@@ -442,20 +453,38 @@ export default function BookingForm() {
           </div>
 
           {isNonLagnProgramSelected && (
-            <div className={`${styles.formGroup} ${styles.subSection}`}>
-              <label htmlFor="event_place" className={styles.label}>
-                ठिकाण <span className={styles.required}>*</span>
-              </label>
-              <input
-                type="text"
-                id="event_place"
-                name="event_place"
-                value={formData.event_place}
-                onChange={handleChange}
-                placeholder="कार्यक्रमाचे ठिकाण लिहा"
-                className={styles.input}
-                required
-              />
+            <div className={styles.subSection}>
+              <div className={styles.formGroup}>
+                <label htmlFor="event_place" className={styles.label}>
+                  ठिकाण <span className={styles.required}>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="event_place"
+                  name="event_place"
+                  value={formData.event_place}
+                  onChange={handleChange}
+                  placeholder="कार्यक्रमाचे ठिकाण लिहा"
+                  className={styles.input}
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="booking_date" className={styles.label}>
+                  बुकिंग तारीख <span className={styles.required}>*</span>
+                </label>
+                <input
+                  type="date"
+                  id="booking_date"
+                  name="booking_date"
+                  value={formData.booking_date}
+                  onChange={handleChange}
+                  className={styles.input}
+                  min={new Date().toISOString().split('T')[0]}
+                  required
+                />
+              </div>
             </div>
           )}
 

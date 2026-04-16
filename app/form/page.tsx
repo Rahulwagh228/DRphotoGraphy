@@ -8,6 +8,7 @@ import styles from './Form.module.scss'
 const programOptions = [
   { value: '', label: '-- कार्यक्रम निवडा --' },
   { value: 'लग्न समारंभ', label: 'लग्न समारंभ' },
+  { value: 'प्री वेडिंग', label: 'प्री वेडिंग' },
   { value: 'वाढदिवस', label: 'वाढदिवस' },
   { value: 'डोहाळे', label: 'डोहाळे' },
   { value: 'साखरपुडा', label: 'साखरपुडा' },

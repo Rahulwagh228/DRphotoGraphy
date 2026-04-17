@@ -1,0 +1,169 @@
+.recevablesPage {
+  min-height: calc(100vh - 80px);
+  padding: 2rem 1rem 3rem;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(201, 169, 110, 0.1), transparent 36%),
+    radial-gradient(circle at 80% 0%, rgba(201, 169, 110, 0.08), transparent 36%),
+    linear-gradient(160deg, #050505 0%, #0d0d0d 58%, #111111 100%);
+}
+
+.panel {
+  max-width: 1320px;
+  margin: 0 auto;
+  background: rgba(16, 16, 16, 0.84);
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  border-radius: 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  padding: 1.25rem;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--text-primary);
+  }
+}
+
+.badge {
+  display: inline-block;
+  margin: 0 0 0.45rem;
+  padding: 0.26rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 169, 110, 0.28);
+  background: rgba(201, 169, 110, 0.12);
+  color: var(--accent-light);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.backBtn {
+  border: 1px solid rgba(201, 169, 110, 0.28);
+  background: rgba(201, 169, 110, 0.12);
+  color: #f5ead5;
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summaryCard {
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+
+  span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  strong {
+    color: var(--accent-light);
+    font-size: 1.15rem;
+  }
+}
+
+.infoCard,
+.errorCard {
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.infoCard {
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.errorCard {
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  background: rgba(248, 113, 113, 0.08);
+  color: #fca5a5;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid rgba(201, 169, 110, 0.14);
+  border-radius: 12px;
+}
+
+.table {
+  width: 100%;
+  min-width: 1080px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.08);
+    text-align: left;
+    font-size: 0.85rem;
+    vertical-align: top;
+  }
+
+  th {
+    background: rgba(12, 12, 12, 0.96);
+    color: var(--accent-light);
+    position: sticky;
+    top: 0;
+  }
+
+  tbody tr:hover {
+    background: rgba(201, 169, 110, 0.06);
+  }
+}
+
+.receivedInput {
+  width: 130px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.24);
+  border-radius: 9px;
+  color: var(--text-primary);
+  padding: 0.42rem 0.52rem;
+  outline: none;
+
+  &:focus {
+    border-color: rgba(201, 169, 110, 0.45);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.09);
+  }
+}
+
+.saveBtn {
+  border: 1px solid rgba(74, 222, 128, 0.34);
+  background: rgba(74, 222, 128, 0.14);
+  color: #86efac;
+  border-radius: 9px;
+  padding: 0.4rem 0.62rem;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: wait;
+  }
+}

@@ -117,7 +117,7 @@
 
 .toolbarActions {
   display: grid;
-  grid-template-columns: minmax(200px, 1fr) auto;
+  grid-template-columns: minmax(200px, 1fr) auto auto;
   gap: 0.75rem;
   align-items: center;
 }
@@ -179,6 +179,24 @@
 .logoutBtn {
   white-space: nowrap;
   background: rgba(255, 255, 255, 0.04);
+}
+
+.recevablesBtn {
+  border: 1px solid rgba(96, 165, 250, 0.34);
+  background: rgba(96, 165, 250, 0.14);
+  color: #bfdbfe;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.74rem 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(96, 165, 250, 0.16);
+  }
 }
 
 .errorText {

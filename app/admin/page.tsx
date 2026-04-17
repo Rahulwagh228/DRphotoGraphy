@@ -322,6 +322,9 @@ export default function AdminPage() {
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
             />
+            <button type="button" className={styles.recevablesBtn} onClick={() => router.push('/recevables')}>
+              Recevables
+            </button>
             <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
               Logout
             </button>

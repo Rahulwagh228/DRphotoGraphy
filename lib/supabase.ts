@@ -318,6 +318,8 @@ export interface MyWorkRecord {
   work_place: string
   work_dates: string[]
   total_receivable: number
+  total_received: number | null
+  receivable_remaining: number | null
   created_at: string
   updated_at?: string | null
 }
@@ -336,6 +338,8 @@ export async function submitMyWorkEntry(data: MyWorkFormData) {
         work_place: data.work_place,
         work_dates: data.work_dates,
         total_receivable: data.total_receivable,
+        total_received: 0,
+        receivable_remaining: data.total_receivable,
         created_at: new Date().toISOString(),
       },
     ])
@@ -346,4 +350,58 @@ export async function submitMyWorkEntry(data: MyWorkFormData) {
   }
 
   return result
+}
+
+export async function fetchMyWorkEntries() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+  }
+
+  const { data, error } = await supabase
+    .from('my_work_entries')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return (data ?? []) as MyWorkRecord[]
+}
+
+export async function updateMyWorkReceived(id: string, totalReceived: number | null) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+  }
+
+  const { data: current, error: currentError } = await supabase
+    .from('my_work_entries')
+    .select('id, total_receivable')
+    .eq('id', id)
+    .single()
+
+  if (currentError || !current) {
+    throw new Error(currentError?.message || 'Record not found')
+  }
+
+  const remaining = totalReceived === null
+    ? current.total_receivable
+    : Math.max(Number(current.total_receivable || 0) - totalReceived, 0)
+
+  const { data, error } = await supabase
+    .from('my_work_entries')
+    .update({
+      total_received: totalReceived,
+      receivable_remaining: remaining,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select('*')
+    .single()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data as MyWorkRecord
 }

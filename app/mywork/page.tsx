@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -10,7 +10,7 @@ import { MyWorkFormData, submitMyWorkEntry } from '@/lib/supabase'
 const AUTH_KEY = 'dr_admin_access'
 const MYWORK_FROM_ADMIN_KEY = 'dr_mywork_from_admin'
 
-export default function MyWorkPage() {
+function MyWorkPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isAuthorized, setIsAuthorized] = useState(false)
@@ -242,5 +242,13 @@ export default function MyWorkPage() {
         </form>
       </div>
     </section>
+  )
+}
+
+export default function MyWorkPage() {
+  return (
+    <Suspense fallback={null}>
+      <MyWorkPageInner />
+    </Suspense>
   )
 }

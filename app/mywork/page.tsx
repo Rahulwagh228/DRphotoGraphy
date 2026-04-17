@@ -9,6 +9,7 @@ import { MyWorkFormData, submitMyWorkEntry } from '@/lib/supabase'
 export default function MyWorkPage() {
   const [formData, setFormData] = useState({
     employee_name: '',
+    program: '',
     work_place: '',
     total_receivable: '',
     work_dates: [''],
@@ -51,6 +52,11 @@ export default function MyWorkPage() {
       return
     }
 
+    if (!formData.program.trim()) {
+      setErrorMessage('कृपया कार्यक्रम भरा')
+      return
+    }
+
     const cleanedDates = formData.work_dates.map((d) => d.trim()).filter((d) => d !== '')
     if (cleanedDates.length === 0) {
       setErrorMessage('कृपया किमान एक तारीख भरा')
@@ -67,6 +73,7 @@ export default function MyWorkPage() {
     try {
       const payload: MyWorkFormData = {
         employee_name: formData.employee_name.trim(),
+        program: formData.program.trim(),
         work_place: formData.work_place.trim(),
         work_dates: cleanedDates,
         total_receivable: totalReceivable,
@@ -76,6 +83,7 @@ export default function MyWorkPage() {
       toast.success('My Work नोंद यशस्वीरित्या सेव्ह झाली')
       setFormData({
         employee_name: '',
+        program: '',
         work_place: '',
         total_receivable: '',
         work_dates: [''],
@@ -109,6 +117,20 @@ export default function MyWorkPage() {
               value={formData.employee_name}
               onChange={handleChange}
               placeholder="उदा. राहुल वाघ"
+              className={styles.input}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="program">कार्यक्रम</label>
+            <input
+              id="program"
+              name="program"
+              type="text"
+              value={formData.program}
+              onChange={handleChange}
+              placeholder="उदा. लग्न समारंभ"
               className={styles.input}
               required
             />

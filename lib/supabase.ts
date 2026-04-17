@@ -305,6 +305,7 @@ export async function deleteExpense(expenseId: string) {
 
 export interface MyWorkFormData {
   employee_name: string
+  program: string
   work_place: string
   work_dates: string[]
   total_receivable: number
@@ -313,6 +314,7 @@ export interface MyWorkFormData {
 export interface MyWorkRecord {
   id: string
   employee_name: string
+  program: string
   work_place: string
   work_dates: string[]
   total_receivable: number
@@ -330,6 +332,7 @@ export async function submitMyWorkEntry(data: MyWorkFormData) {
     .insert([
       {
         employee_name: data.employee_name,
+        program: data.program,
         work_place: data.work_place,
         work_dates: data.work_dates,
         total_receivable: data.total_receivable,

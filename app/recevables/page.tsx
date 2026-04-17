@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
 import styles from './Recevables.module.scss'
@@ -33,7 +33,7 @@ function formatMoney(value?: number | null) {
   }).format(value)
 }
 
-export default function RecevablesPage() {
+function RecevablesPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [entries, setEntries] = useState<MyWorkRecord[]>([])
@@ -236,5 +236,21 @@ export default function RecevablesPage() {
         )}
       </section>
     </main>
+  )
+}
+
+export default function RecevablesPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className={styles.recevablesPage}>
+          <section className={styles.panel}>
+            <div className={styles.infoCard}>डेटा लोड होत आहे...</div>
+          </section>
+        </main>
+      }
+    >
+      <RecevablesPageInner />
+    </Suspense>
   )
 }

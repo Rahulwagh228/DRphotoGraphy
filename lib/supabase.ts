@@ -298,3 +298,49 @@ export async function deleteExpense(expenseId: string) {
 
   if (error) throw new Error(error.message)
 }
+
+/* ─────────────────────────────────────────────
+   My Work (day payroll for other bookings)
+   ───────────────────────────────────────────── */
+
+export interface MyWorkFormData {
+  employee_name: string
+  work_place: string
+  work_dates: string[]
+  total_receivable: number
+}
+
+export interface MyWorkRecord {
+  id: string
+  employee_name: string
+  work_place: string
+  work_dates: string[]
+  total_receivable: number
+  created_at: string
+  updated_at?: string | null
+}
+
+export async function submitMyWorkEntry(data: MyWorkFormData) {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+  }
+
+  const { data: result, error } = await supabase
+    .from('my_work_entries')
+    .insert([
+      {
+        employee_name: data.employee_name,
+        work_place: data.work_place,
+        work_dates: data.work_dates,
+        total_receivable: data.total_receivable,
+        created_at: new Date().toISOString(),
+      },
+    ])
+    .select()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return result
+}

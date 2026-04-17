@@ -14,6 +14,7 @@ const Navbar = () => {
   const menuItems = [
     { label: "मुख्यपृष्ठ", href: "/" },
     { label: "सेवा", href: "/services" },
+    { label: "माय वर्क", href: "/mywork" },
     { label: "गॅलरी", href: "/portfolio" },
     { label: "आमच्याबद्दल", href: "/aboutUs" },
   ];

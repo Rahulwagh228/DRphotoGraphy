@@ -1,12 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
 import styles from './MyWork.module.scss'
 import { MyWorkFormData, submitMyWorkEntry } from '@/lib/supabase'
 
+const AUTH_KEY = 'dr_admin_access'
+const MYWORK_FROM_ADMIN_KEY = 'dr_mywork_from_admin'
+
 export default function MyWorkPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [authChecking, setAuthChecking] = useState(true)
   const [formData, setFormData] = useState({
     employee_name: '',
     program: '',
@@ -16,6 +24,34 @@ export default function MyWorkPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    const fromAdmin = searchParams.get('from') === 'admin'
+    const fromAdminFlag = window.sessionStorage.getItem(MYWORK_FROM_ADMIN_KEY) === 'yes'
+    const fromAdminReferrer = (() => {
+      if (!document.referrer) return false
+      try {
+        const ref = new URL(document.referrer)
+        return ref.pathname.startsWith('/admin')
+      } catch {
+        return false
+      }
+    })()
+
+    const allowWithoutAuth = fromAdmin || fromAdminFlag || fromAdminReferrer
+    if (fromAdminFlag) {
+      window.sessionStorage.removeItem(MYWORK_FROM_ADMIN_KEY)
+    }
+
+    const hasAccess = window.sessionStorage.getItem(AUTH_KEY) === 'yes'
+    const allowed = allowWithoutAuth || hasAccess
+    setIsAuthorized(allowed)
+    setAuthChecking(false)
+
+    if (!allowed) {
+      router.replace('/admin')
+    }
+  }, [router, searchParams])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -95,6 +131,10 @@ export default function MyWorkPage() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (authChecking || !isAuthorized) {
+    return null
   }
 
   return (

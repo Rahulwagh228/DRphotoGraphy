@@ -332,6 +332,16 @@ export default function AdminPage() {
             >
               Recevables
             </button>
+            <button
+              type="button"
+              className={styles.myWorkBtn}
+              onClick={() => {
+                window.sessionStorage.setItem('dr_mywork_from_admin', 'yes')
+                router.push('/mywork')
+              }}
+            >
+              Add Work
+            </button>
             <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
               Logout
             </button>

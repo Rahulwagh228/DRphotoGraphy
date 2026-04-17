@@ -111,13 +111,13 @@ export default function RecevablesPage() {
     const value = draft.trim() === '' ? null : Number(draft)
 
     if (value !== null && (Number.isNaN(value) || value < 0)) {
-      toast.error('Received amount must be a valid non-negative number')
+      toast.error('मिळालेली रक्कम वैध आणि शून्य किंवा अधिक असावी')
       return
     }
 
     const row = entries.find((item) => item.id === id)
     if (row && value !== null && value > Number(row.total_receivable || 0)) {
-      toast.error('Received amount cannot be greater than total receivable')
+      toast.error('मिळालेली रक्कम एकूण घेण्यापेक्षा जास्त असू शकत नाही')
       return
     }
 
@@ -129,9 +129,9 @@ export default function RecevablesPage() {
         ...prev,
         [id]: updated.total_received === null || updated.total_received === undefined ? '' : String(updated.total_received),
       }))
-      toast.success('Received amount updated successfully')
+      toast.success('मिळालेली रक्कम यशस्वीरित्या अपडेट झाली')
     } catch (err: any) {
-      toast.error(err?.message || 'Failed to update received amount')
+      toast.error(err?.message || 'मिळालेली रक्कम अपडेट करताना समस्या आली')
     } finally {
       setUpdatingId('')
     }
@@ -142,23 +142,23 @@ export default function RecevablesPage() {
       <section className={styles.panel}>
         <div className={styles.headerRow}>
           <div>
-            <p className={styles.badge}>Admin Recevables</p>
-            <h1>Recevables Tracker</h1>
-            <p className={styles.subtitle}>My Work entries with receivable and received tracking</p>
+            <p className={styles.badge}>ऍडमिन घेणे</p>
+            <h1>Total घेणे</h1>
+            <p className={styles.subtitle}>बहेरच्या कामाने मिळालेली रक्कम ट्रॅक करा</p>
           </div>
           <button className={styles.backBtn} onClick={() => router.push('/admin')}>
-            Back to Admin
+            ऍडमिनकडे परत जा
           </button>
         </div>
 
         <div className={styles.summaryGrid}>
           <div className={styles.summaryCard}>
-            <span>This Month Total Receivables</span>
-            <strong>Rs. {formatMoney(thisMonthTotals.totalReceivable)}</strong>
+            <span>या महिन्याचे एकूण घेणे</span>
+            <strong>रु. {formatMoney(thisMonthTotals.totalReceivable)}</strong>
           </div>
           <div className={styles.summaryCard}>
-            <span>This Month Total Received</span>
-            <strong>Rs. {formatMoney(thisMonthTotals.totalReceived)}</strong>
+            <span>या महिन्याची एकूण मिळालेली रक्कम</span>
+            <strong>रु. {formatMoney(thisMonthTotals.totalReceived)}</strong>
           </div>
         </div>
 
@@ -175,14 +175,14 @@ export default function RecevablesPage() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Program</th>
-                  <th>Place</th>
-                  <th>Dates</th>
-                  <th>Total Receivable</th>
-                  <th>Total Received</th>
-                  <th>Remaining</th>
-                  <th>Created</th>
+                  <th>नाव</th>
+                  <th>कार्यक्रम</th>
+                  <th>ठिकाण</th>
+                  <th>तारखा</th>
+                  <th>एकूण घेणे</th>
+                  <th>मिळालेली रक्कम</th>
+                  <th>बाकी</th>
+                  <th>Created At</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -196,7 +196,7 @@ export default function RecevablesPage() {
                       <td>{item.program}</td>
                       <td>{item.work_place}</td>
                       <td>{formatDates(item.work_dates)}</td>
-                      <td>Rs. {formatMoney(item.total_receivable)}</td>
+                      <td>रु. {formatMoney(item.total_receivable)}</td>
                       <td>
                         <input
                           type="number"
@@ -214,7 +214,7 @@ export default function RecevablesPage() {
                         />
                       </td>
                       <td>
-                        Rs. {formatMoney(item.receivable_remaining)}
+                        रु. {formatMoney(item.receivable_remaining)}
                       </td>
                       <td>{formatDate(item.created_at)}</td>
                       <td>
@@ -224,7 +224,7 @@ export default function RecevablesPage() {
                           onClick={() => handleSaveReceived(item.id)}
                           disabled={isUpdating}
                         >
-                          {isUpdating ? 'Saving...' : 'Save'}
+                          {isUpdating ? 'सेव्ह होत आहे...' : 'सेव्ह करा'}
                         </button>
                       </td>
                     </tr>

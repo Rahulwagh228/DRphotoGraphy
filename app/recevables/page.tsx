@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
 import styles from './Recevables.module.scss'
 import { fetchMyWorkEntries, MyWorkRecord, updateMyWorkReceived } from '@/lib/supabase'
 
 const AUTH_KEY = 'dr_admin_access'
+const RECEVABLES_FROM_ADMIN_KEY = 'dr_recevables_from_admin'
 
 function formatDate(value?: string | null) {
   if (!value) return '-'
@@ -34,6 +35,7 @@ function formatMoney(value?: number | null) {
 
 export default function RecevablesPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [entries, setEntries] = useState<MyWorkRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -41,8 +43,25 @@ export default function RecevablesPage() {
   const [receivedDrafts, setReceivedDrafts] = useState<Record<string, string>>({})
 
   useEffect(() => {
+    const fromAdmin = searchParams.get('from') === 'admin'
+    const fromAdminFlag = window.sessionStorage.getItem(RECEVABLES_FROM_ADMIN_KEY) === 'yes'
+    const fromAdminReferrer = (() => {
+      if (!document.referrer) return false
+      try {
+        const ref = new URL(document.referrer)
+        return ref.pathname.startsWith('/admin')
+      } catch {
+        return false
+      }
+    })()
+
+    const allowWithoutAuth = fromAdmin || fromAdminFlag || fromAdminReferrer
+    if (fromAdminFlag) {
+      window.sessionStorage.removeItem(RECEVABLES_FROM_ADMIN_KEY)
+    }
+
     const hasAccess = window.sessionStorage.getItem(AUTH_KEY) === 'yes'
-    if (!hasAccess) {
+    if (!allowWithoutAuth && !hasAccess) {
       router.replace('/admin')
       return
     }
@@ -69,7 +88,7 @@ export default function RecevablesPage() {
     }
 
     loadEntries()
-  }, [router])
+  }, [router, searchParams])
 
   const thisMonthTotals = useMemo(() => {
     const now = new Date()
